@@ -112,6 +112,8 @@ body {
 .song-info {
     text-align: left;
     margin-bottom: 28px;
+    min-width: 0;
+    width: 100%;
 }
 
 .song-info h2 {
@@ -119,19 +121,25 @@ body {
     font-weight: 800;
     margin-bottom: 8px;
     color: #ffffff;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
     letter-spacing: -0.5px;
+    max-width: 100%;
 }
 
 .song-info p {
     color: #b3b3b3;
     font-size: 15px;
     font-weight: 500;
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    max-width: 100%;
 }
 
 /* Progress Bar */
@@ -444,15 +452,20 @@ input[type=range]::-webkit-slider-thumb:hover {
         width: 100%;
         padding: 20px;
     }
+
     .brand {
         grid-column: 1;
     }
+
     .cover-box {
         max-width: 220px;
     }
+
     .playlist-section {
         grid-column: 1;
     }
+
     .footer {
         width: 100%;
     }
+}
