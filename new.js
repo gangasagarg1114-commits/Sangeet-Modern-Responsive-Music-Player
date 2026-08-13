@@ -52,6 +52,12 @@ const songs = [
     artist: "Satinder_Sartaaj",
     src: "songs/Sajjan Raazi.mp3",
     cover: "images/Sajjan Raazi.jpg"
+  },
+  {
+    title: "O Sanam",
+    artist: "Akhil_Sachdeva",
+    src: "songs/O Sanam.mp3",
+    cover: "images/O Sanam.jpg"
   }
 ];
 
