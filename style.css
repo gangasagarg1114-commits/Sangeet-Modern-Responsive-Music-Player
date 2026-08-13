@@ -109,11 +109,18 @@ body {
 }
 
 /* Song Info - Proper Gap aur Bada Title */
+.main-player-content {
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
 .song-info {
     text-align: left;
     margin-bottom: 28px;
     min-width: 0;
     width: 100%;
+    overflow: hidden;
 }
 
 .song-info h2 {
@@ -121,13 +128,38 @@ body {
     font-weight: 800;
     margin-bottom: 8px;
     color: #ffffff;
+    letter-spacing: -0.5px;
 
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-
-    letter-spacing: -0.5px;
+    text-overflow: clip;
     max-width: 100%;
+}
+
+/* Long song title scrolling */
+.song-info h2.scrolling {
+    width: max-content;
+    max-width: none;
+
+    animation:
+        songTitleScroll
+        var(--scroll-duration, 8s)
+        linear
+        infinite alternate;
+}
+
+@keyframes songTitleScroll {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform:
+            translateX(
+                calc(-1 * var(--scroll-distance))
+            );
+    }
 }
 
 .song-info p {
