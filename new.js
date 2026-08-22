@@ -58,6 +58,12 @@ const songs = [
     artist: "Akhil_Sachdeva",
     src: "songs/O Sanam.mp3",
     cover: "images/O Sanam.jpg"
+  },
+  {
+    title: "Chalta Rahe",
+    artist: "Ankit_Tiwari",
+    src: "songs/Chalta Rahe.mp3",
+    cover: "images/Chalta Rahe.jpg"
   }
 ];
 
