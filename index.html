@@ -3,134 +3,94 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sangeet - High-Fidelity Audio Experience</title>
+    <title>Sangeet - Premium Cinematic Player</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   </head>
 
   <body>
-    <div class="player">
-      <!-- Brand Name Inside Player Container -->
-      <div class="brand">
-        <div class="logo">
-          <i class="fa-solid fa-music"></i>
-        </div>
-        <div class="brand-text">
-          <h1>Sangeet</h1>
-          <p>Immersive Soundscapes</p>
-        </div>
-      </div>
+    <div class="player-shell">
+      <div class="player-container" id="playerContainer">
+        <video id="bgVideo" autoplay loop muted playsinline></video>
+        <div class="bg-overlay"></div>
 
-      <!-- Album Cover -->
-      <div class="cover-box">
-        <img id="cover" src="images/default-cover.jpg" alt="Album Cover" />
-      </div>
-
-      <!-- Main Player Content Area -->
-      <div class="main-player-content">
-        <!-- Song Details -->
-        <div class="song-info">
-          <div class="title-wrapper">
-            <h2 id="title">No Song Selected</h2>
+        <div class="top-bar">
+          <div class="brand-badge" aria-label="Sangeet logo">
+            <div class="brand-mark">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                <defs>
+                  <linearGradient id="brandGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+                    <stop offset="0%" stop-color="#a9ffd0" />
+                    <stop offset="50%" stop-color="#63f3a7" />
+                    <stop offset="100%" stop-color="#1ed760" />
+                  </linearGradient>
+                </defs>
+                <rect x="5" y="5" width="54" height="54" rx="18" fill="rgba(5,10,15,0.85)" stroke="rgba(255,255,255,0.08)"/>
+                <path d="M22 18c-6 1-10 7-10 13 0 7 5 12 12 12 3 0 6-1 9-3v16h8V20.5c0-2.5-1.8-4.5-4.3-4.5H22z" fill="url(#brandGradient)" opacity="0.24"/>
+                <path d="M42 17c-4-5-10-7-16-5-7 3-11 10-9 17 2 7 10 9 16 8 5-2 8-6 8-11 0-5-3-7-9-7-4 0-7 2-7 5 0 3 2 4 6 5" fill="none" stroke="url(#brandGradient)" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 22v20.5c0 3.8-2.5 7.2-6.2 8.2-5.3 1.5-10.5-2.6-10.5-8.2 0-6.4 5.6-9.8 10.3-8.5" fill="none" stroke="url(#brandGradient)" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="44.5" cy="20.5" r="4.5" fill="#f5d37a"/>
+                <path d="M47 18v18" stroke="#f5d37a" stroke-width="2.3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="brand-wordmark">Sangeet</div>
           </div>
-          <p id="artist">Upload a song to start</p>
+
+          <div class="vibe-options">
+            <button class="vibe-pill active" data-vibe="90s" onclick="selectVibe('90s', this)">90s</button>
+            <button class="vibe-pill" data-vibe="newHindi" onclick="selectVibe('newHindi', this)">New Hindi</button>
+            <button class="vibe-pill" data-vibe="bhojpuri" onclick="selectVibe('bhojpuri', this)">Bhojpuri</button>
+          </div>
+        </div>
+
+        <div class="player-center-wrapper">
+          <div class="inner-capsule">
+            <div class="cover-circle">
+              <img id="cover" src="images/default-cover.jpg" alt="Album Art" />
+            </div>
+
+            <div class="track-core">
+              <div class="song-info">
+                <h2 id="title">Song Name</h2>
+                <p id="artist">Singer Name</p>
+              </div>
+
+              <div class="progress-bar">
+                <span id="current">0:00</span>
+                <input type="range" id="progress" value="0" min="0" max="100" />
+                <span id="duration">0:00</span>
+              </div>
+
+              <div class="bottom-row">
+                <div class="controls">
+                  <button id="shuffle" class="control-btn" aria-label="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+                  <button id="prev" class="control-btn" aria-label="Previous"><i class="fa-solid fa-backward-step"></i></button>
+                  <button id="play" class="play-btn" aria-label="Play or pause"><i id="playIcon" class="fa-solid fa-play"></i></button>
+                  <button id="next" class="control-btn" aria-label="Next"><i class="fa-solid fa-forward-step"></i></button>
+                  <button id="repeat" class="control-btn" aria-label="Repeat"><i class="fa-solid fa-repeat"></i></button>
+                </div>
+
+                <div class="volume-control">
+                  <i class="fa-solid fa-volume-high"></i>
+                  <input type="range" id="volume" value="0.8" min="0" max="1" step="0.01" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <audio id="audio"></audio>
-
-        <!-- Progress -->
-        <div class="progress-container">
-          <div class="time">
-            <span id="current">0:00</span>
-            <span id="duration">0:00</span>
-          </div>
-          <input type="range" id="progress" value="0" min="0" max="100" />
-        </div>
-
-        <!-- Controls -->
-        <div class="controls">
-          <button id="shuffle" class="control-btn" aria-pressed="false">
-            <i class="fa-solid fa-shuffle"></i>
-          </button>
-          <button id="prev" class="control-btn">
-            <i class="fa-solid fa-backward-step"></i>
-          </button>
-          <button id="play" class="play-btn" aria-label="Play">
-            <i id="playIcon" class="fa-solid fa-play"></i>
-          </button>
-          <button id="next" class="control-btn">
-            <i class="fa-solid fa-forward-step"></i>
-          </button>
-          <button id="repeat" class="control-btn" aria-pressed="false">
-            <i class="fa-solid fa-repeat"></i>
-          </button>
-        </div>
-
-        <!-- Utilities Bar (Volume, Upload, Search) -->
-        <div class="utilities">
-          <div class="volume-box">
-            <i id="volumeIcon" class="fa-solid fa-volume-high"></i>
-            <input
-              type="range"
-              id="volume"
-              min="0"
-              max="1"
-              step="0.01"
-              value="1"
-            />
-          </div>
-          <div class="action-buttons">
-            <div class="search-box">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="search" placeholder="Search track..." />
-            </div>
-            <label
-              for="songUpload"
-              class="upload-label"
-              title="Upload Local Songs"
-            >
-              <i class="fa-solid fa-folder-plus"></i>
-            </label>
-            <input type="file" id="songUpload" accept="audio/*" multiple />
-          </div>
-        </div>
-      </div>
-
-      <!-- Playlist -->
-      <div class="playlist-section">
-        <h3>Up Next <span id="trackCount"></span></h3>
-        <ul id="playlist"></ul>
-        <p id="emptyState" hidden>No songs found</p>
       </div>
     </div>
 
     <footer class="footer">
       <p>Crafted with ❤️ by <span>Ganga Sagar Tiwari</span></p>
-
       <div class="social-links">
-        <a href="https://github.com/gangasagarg1114-commits" target="_blank"
-          ><i class="fab fa-github"></i
-        ></a>
-        <a
-          href="https://www.linkedin.com/in/gangasagar-softwareengineer/"
-          target="_blank"
-          ><i class="fab fa-linkedin"></i
-        ></a>
-        <a href="https://www.instagram.com/_ami_t_tiwari_/" target="_blank"
-          ><i class="fab fa-instagram"></i
-        ></a>
-        <a href="https://x.com/buildwithganga" target="_blank"
-          ><i class="fab fa-x-twitter"></i
-        ></a>
+        <a href="https://github.com/gangasagarg1114-commits" target="_blank" rel="noreferrer"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/gangasagar-softwareengineer/" target="_blank" rel="noreferrer"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.instagram.com/_ami_t_tiwari_/" target="_blank" rel="noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/buildwithganga" target="_blank" rel="noreferrer"><i class="fab fa-x-twitter"></i></a>
       </div>
     </footer>
 
