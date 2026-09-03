@@ -10,11 +10,13 @@
   </head>
 
   <body>
+    <!-- Main music player -->
     <div class="player-shell">
       <div class="player-container" id="playerContainer">
         <video id="bgVideo" autoplay loop muted playsinline></video>
         <div class="bg-overlay"></div>
 
+        <!-- Logo and music category buttons -->
         <div class="top-bar">
           <div class="brand-badge" aria-label="Sangeet logo">
             <div class="brand-mark">
@@ -38,12 +40,13 @@
           </div>
 
           <div class="vibe-options">
-            <button class="vibe-pill active" data-vibe="90s" onclick="selectVibe('90s', this)">90s</button>
-            <button class="vibe-pill" data-vibe="newHindi" onclick="selectVibe('newHindi', this)">New Hindi</button>
-            <button class="vibe-pill" data-vibe="bhojpuri" onclick="selectVibe('bhojpuri', this)">Bhojpuri</button>
+            <button class="vibe-pill active" data-vibe="90s">90s</button>
+            <button class="vibe-pill" data-vibe="newHindi">New Hindi</button>
+            <button class="vibe-pill" data-vibe="bhojpuri">Bhojpuri</button>
           </div>
         </div>
 
+        <!-- Album cover, song details and controls -->
         <div class="player-center-wrapper">
           <div class="inner-capsule">
             <div class="cover-circle">
@@ -84,6 +87,7 @@
       </div>
     </div>
 
+    <!-- Footer and social links -->
     <footer class="footer">
       <p>Crafted with ❤️ by <span>Ganga Sagar Tiwari</span></p>
       <div class="social-links">
