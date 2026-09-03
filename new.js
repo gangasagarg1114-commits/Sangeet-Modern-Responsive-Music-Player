@@ -2,29 +2,39 @@
    Sangeet - Premium Cinematic Player
 =========================== */
 
-// Deezer se songs na milen to ye local songs chalenge.
-const localSongs = [
-  { title: 'HASEEN', artist: 'TALWIINDER', src: 'songs/HASEEN.mp3', cover: 'images/haseen.jpg' },
-  { title: 'Ishq', artist: 'Amir Ameer', src: 'songs/Ishq.mp3', cover: 'images/ishq.jpg' },
-  { title: 'Janam Janam', artist: 'Arijit Singh', src: 'songs/Janam Janam.mp3', cover: 'images/Janam Janam.jpg' },
-  { title: 'Thodi Der', artist: 'Arjun Kapoor & Shraddha Kapoor', src: 'songs/Thodi Der.mp3', cover: 'images/Thodi Der.webp' }
+const newHindiSongs = [
+  { title: 'HASEEN', artist: 'TALWIINDER', src: 'songs/newHindi/HASEEN.mp3', cover: 'images/newHindi/haseen.jpg' },
+  { title: 'Ishq', artist: 'Amir Ameer', src: 'songs/newHindi/Ishq.mp3', cover: 'images/newHindi/ishq.jpg' },
+  { title: 'Janam Janam', artist: 'Arijit Singh', src: 'songs/newHindi/Janam Janam.mp3', cover: 'images/newHindi/Janam Janam.jpg' },
+  { title: 'Thodi Der', artist: 'Arjun Kapoor & Shraddha Kapoor', src: 'songs/newHindi/Thodi Der.mp3', cover: 'images/newHindi/Thodi Der.jpg' },
+  { title: 'Acche Lagte Ho', artist: 'Local song', src: 'songs/newHindi/Acche lagte ho.mp3', cover: 'images/newHindi/acche.jpg' },
+  { title: 'Bairan', artist: 'Local song', src: 'songs/newHindi/Bairan.mp3', cover: 'images/newHindi/bairen.jpg' },
+  { title: 'Chalta Rahe', artist: 'Local song', src: 'songs/newHindi/Chalta Rahe.mp3', cover: 'images/newHindi/Chalta Rahe.jpg' },
+  { title: 'Hare Krishna Hare Rama', artist: 'Local song', src: 'songs/newHindi/Hare Krishna Hare Rama.mp3', cover: 'images/newHindi/Hare Krishna.jpg' },
+  { title: 'Main Agar', artist: 'Local song', src: 'songs/newHindi/Main Agar.mp3', cover: 'images/newHindi/Main Agar.jpg' },
+  { title: 'O Sanam', artist: 'Local song', src: 'songs/newHindi/O Sanam.mp3', cover: 'images/newHindi/O Sanam.jpg' },
+  { title: 'Sajjan Raazi', artist: 'Local song', src: 'songs/newHindi/Sajjan Raazi.mp3', cover: 'images/newHindi/Sajjan Raazi.jpg' },
+  { title: 'Tera Mera Rishta', artist: 'Local song', src: 'songs/newHindi/Tera Mera Rishta.mp3', cover: 'images/newHindi/rishta.jpg' }
 ];
 
 const vibeConfig = {
   '90s': {
     bg: 'images/New Hindi.mp4',
+    label: '90s',
     apiQuery: '90s bollywood songs',
-    songs: localSongs
+    songs: ninetiesSongs
   },
   'newHindi': {
     bg: 'images/New Hindi.mp4',
+    label: 'New Hindi',
     apiQuery: 'new hindi songs 2024',
-    songs: localSongs
+    songs: newHindiSongs
   },
   'bhojpuri': {
     bg: 'images/New Hindi.mp4',
+    label: 'Bhojpuri',
     apiQuery: 'bhojpuri songs',
-    songs: localSongs
+    songs: []
   }
 };
 
@@ -52,11 +62,10 @@ let songIndex = 0;
 let isPlaying = false;
 let isShuffle = false;
 let isRepeat = false;
+let activeVibeKey = 'newHindi';
 const GOLD_COLOR = '#f7d77f';
 
-// API se 5 preview songs laane ki koshish karta hai.
-// API fail ho to ye function empty list return karta hai.
-async function getSongsFromApi(query) {
+async function fetchSongsFromApi(query) {
   const url = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=5`;
 
   try {
@@ -87,7 +96,7 @@ function setBackground(vibeKey) {
   if (selectedVibe.bg.endsWith('.mp4')) {
     bgVideo.src = selectedVibe.bg;
     bgVideo.style.display = 'block';
-    bgVideo.play().catch(() => {});
+    bgVideo.play();
     playerContainer.style.backgroundImage = 'none';
   } else {
     bgVideo.style.display = 'none';
@@ -96,26 +105,27 @@ function setBackground(vibeKey) {
   }
 }
 
-// Vibe button dabane par us vibe ke songs load hote hain.
-async function selectVibe(vibeKey) {
+async function selectVibe(vibeKey, btnElement) {
   const selectedVibe = vibeConfig[vibeKey];
   if (!selectedVibe) return;
 
-  // Sirf selected button ko active dikhate hain.
-  document.querySelectorAll('.vibe-pill').forEach((button) => {
-    button.classList.toggle('active', button.dataset.vibe === vibeKey);
-  });
+  activeVibeKey = vibeKey;
 
-  const apiSongs = await getSongsFromApi(selectedVibe.apiQuery);
-  currentPlaylist = apiSongs.length ? apiSongs : selectedVibe.songs;
+  document.querySelectorAll('.vibe-pill').forEach((btn) => btn.classList.remove('active'));
+  if (btnElement) {
+    btnElement.classList.add('active');
+  }
+
+  const apiSongs = await fetchSongsFromApi(selectedVibe.apiQuery);
+  // Pehle apne folder ke songs, uske baad online preview songs.
+  currentPlaylist = [...selectedVibe.songs, ...apiSongs];
   songIndex = 0;
   setBackground(vibeKey);
-  showSong(currentPlaylist[songIndex]);
+  loadSong(currentPlaylist[songIndex]);
   playSong();
 }
 
-// Current song ki information screen par dikhata hai.
-function showSong(song) {
+function loadSong(song) {
   if (!song) return;
   audio.src = song.src;
   title.textContent = song.title;
@@ -124,8 +134,7 @@ function showSong(song) {
   document.title = `${song.title} • Sangeet`;
 }
 
-// Play button ka icon play/pause me badalta hai.
-function updatePlayButton() {
+function updatePlayStateUI() {
   if (isPlaying) {
     playIcon.classList.replace('fa-play', 'fa-pause');
   } else {
@@ -135,35 +144,31 @@ function updatePlayButton() {
   }
 }
 
-// Song start karta hai.
 function playSong() {
   if (!currentPlaylist.length) return;
   audio.play().then(() => {
     isPlaying = true;
-    updatePlayButton();
+    updatePlayStateUI();
   }).catch(() => {
     isPlaying = false;
-    updatePlayButton();
+    updatePlayStateUI();
   });
 }
 
-// Song rokta hai.
 function pauseSong() {
   audio.pause();
   isPlaying = false;
-  updatePlayButton();
+  updatePlayStateUI();
 }
 
-// Previous song par jaata hai.
 function prevSong() {
   if (currentPlaylist.length === 0) return;
   songIndex -= 1;
   if (songIndex < 0) songIndex = currentPlaylist.length - 1;
-  showSong(currentPlaylist[songIndex]);
+  loadSong(currentPlaylist[songIndex]);
   playSong();
 }
 
-// Next song par jaata hai. Shuffle on ho to random song chunta hai.
 function nextSong() {
   if (currentPlaylist.length === 0) return;
 
@@ -175,16 +180,17 @@ function nextSong() {
     if (songIndex >= currentPlaylist.length) songIndex = 0;
   }
 
-  showSong(currentPlaylist[songIndex]);
+  loadSong(currentPlaylist[songIndex]);
   playSong();
 }
 
-// Vibe buttons ko JavaScript ke click event se connect karte hain.
+// Har vibe button ko uski playlist ke saath connect karte hain.
 document.querySelectorAll('.vibe-pill').forEach((button) => {
-  button.addEventListener('click', () => selectVibe(button.dataset.vibe));
+  button.addEventListener('click', () => {
+    selectVibe(button.dataset.vibe, button);
+  });
 });
 
-// Play button: chal raha ho to pause, warna play.
 playBtn.addEventListener('click', () => {
   if (isPlaying) {
     pauseSong();
@@ -196,27 +202,23 @@ playBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 
-// Shuffle button on/off karta hai.
 shuffleBtn.addEventListener('click', () => {
   isShuffle = !isShuffle;
   shuffleBtn.style.color = isShuffle ? GOLD_COLOR : '#b3b3b3';
   shuffleBtn.classList.toggle('active-control', isShuffle);
 });
 
-// Repeat button on/off karta hai.
 repeatBtn.addEventListener('click', () => {
   isRepeat = !isRepeat;
   repeatBtn.style.color = isRepeat ? GOLD_COLOR : '#b3b3b3';
   repeatBtn.classList.toggle('active-control', isRepeat);
 });
 
-// Volume slider ki value audio me set karte hain.
 volumeSlider.addEventListener('input', (event) => {
   audio.volume = Number(event.target.value);
 });
 audio.volume = Number(volumeSlider.value);
 
-// Song chalte waqt progress bar aur current time update hota hai.
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration || Number.isNaN(audio.duration)) return;
   const progressPercent = (audio.currentTime / audio.duration) * 100;
@@ -224,12 +226,10 @@ audio.addEventListener('timeupdate', () => {
   current.textContent = formatTime(audio.currentTime);
 });
 
-// Song ki total length milne par duration dikhate hain.
 audio.addEventListener('loadedmetadata', () => {
   durationDisplay.textContent = formatTime(audio.duration);
 });
 
-// Song khatam hone par repeat ho to wahi song, warna next song.
 audio.addEventListener('ended', () => {
   if (isRepeat) {
     audio.currentTime = 0;
@@ -239,13 +239,11 @@ audio.addEventListener('ended', () => {
   }
 });
 
-// Progress bar par click/drag karke song me aage-peeche ja sakte hain.
 progress.addEventListener('input', () => {
   if (!audio.duration || Number.isNaN(audio.duration)) return;
   audio.currentTime = (progress.value / 100) * audio.duration;
 });
 
-// Seconds ko minutes:seconds format me badalta hai.
 function formatTime(time) {
   if (Number.isNaN(time) || !Number.isFinite(time)) return '0:00';
   const min = Math.floor(time / 60);
@@ -253,4 +251,4 @@ function formatTime(time) {
   return `${min}:${sec < 10 ? '0' + sec : sec}`;
 }
 
-selectVibe('newHindi');
+selectVibe('90s', document.querySelector('[data-vibe="90s"]'));
