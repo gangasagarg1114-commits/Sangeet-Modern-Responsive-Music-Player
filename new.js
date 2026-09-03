@@ -19,7 +19,7 @@ const newHindiSongs = [
 
 const vibeConfig = {
   '90s': {
-    bg: 'images/New Hindi.mp4',
+    bg: 'images/90s/90s songs.jpg',
     label: '90s',
     apiQuery: '90s bollywood songs',
     songs: ninetiesSongs
