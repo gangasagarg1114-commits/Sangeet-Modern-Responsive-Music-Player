@@ -34,7 +34,7 @@ const vibeConfig = {
     bg: 'images/New Hindi.mp4',
     label: 'Bhojpuri',
     apiQuery: 'bhojpuri songs',
-    songs: []
+    songs: bhojpuriSongs
   }
 };
 
