@@ -47,7 +47,7 @@ body {
 .player-container {
   position: relative;
   width: min(980px, 100%);
-  min-height: 520px;
+  min-height: 550px;
   padding: 22px 22px 26px;
   border-radius: 32px;
   overflow: hidden;
