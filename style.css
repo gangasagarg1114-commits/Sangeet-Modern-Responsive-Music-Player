@@ -381,7 +381,7 @@ body {
 .utility-controls {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 12px;
   min-width: 0;
   flex: 1;
@@ -398,7 +398,7 @@ body {
 .playlist-control {
   position: relative;
   flex-shrink: 0;
-  width: 72px;
+  width: 100px;
 }
 
 .playlist-toggle {
