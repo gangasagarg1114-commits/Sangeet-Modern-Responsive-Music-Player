@@ -123,6 +123,7 @@ async function selectVibe(vibeKey, btnElement) {
     btnElement.classList.add('active');
   }
 
+  playlistBtn.href = `playlist.html?vibe=${encodeURIComponent(vibeKey)}`;
   currentPlaylist = [...selectedVibe.songs];
   songIndex = 0;
   renderPlaylist(selectedVibe.label);
@@ -353,4 +354,6 @@ function formatTime(time) {
   return `${min}:${sec < 10 ? '0' + sec : sec}`;
 }
 
-selectVibe('90s', document.querySelector('[data-vibe="90s"]'));
+const initialVibeKey = new URLSearchParams(window.location.search).get('vibe') || '90s';
+const initialVibeButton = document.querySelector(`[data-vibe="${initialVibeKey}"]`);
+selectVibe(initialVibeKey, initialVibeButton || document.querySelector('[data-vibe="90s"]'));
