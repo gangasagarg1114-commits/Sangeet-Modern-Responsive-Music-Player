@@ -39,11 +39,6 @@
             <div class="brand-wordmark">Sangeet</div>
           </div>
 
-          <div class="vibe-options">
-            <button class="vibe-pill active" data-vibe="90s">90s</button>
-            <button class="vibe-pill" data-vibe="newHindi">New Hindi</button>
-            <button class="vibe-pill" data-vibe="bhojpuri">Bhojpuri</button>
-          </div>
         </div>
 
         <!-- Album cover, song details and controls -->
@@ -74,17 +69,86 @@
                   <button id="repeat" class="control-btn" aria-label="Repeat"><i class="fa-solid fa-repeat"></i></button>
                 </div>
 
-                <div class="volume-control">
-                  <i class="fa-solid fa-volume-high"></i>
-                  <input type="range" id="volume" value="0.8" min="0" max="1" step="0.01" />
+                <div class="utility-controls">
+                  <div class="volume-control">
+                    <i class="fa-solid fa-volume-high"></i>
+                    <input type="range" id="volume" value="0.8" min="0" max="1" step="0.01" />
+                  </div>
+
+                  <div class="playlist-control">
+                    <button class="playlist-toggle" id="playlistBtn" type="button" aria-haspopup="dialog" aria-controls="playlistPanel" aria-expanded="false">
+                      <i class="fa-solid fa-list-music" aria-hidden="true"></i>
+                      <span>Playlist</span>
+                    </button>
+                    <div class="playlist-panel" id="playlistPanel" hidden>
+                      <div class="playlist-heading">
+                        <div>
+                          <p class="eyebrow">Now playing vibe</p>
+                          <h3 id="playlistTitle">90s</h3>
+                        </div>
+                        <span id="playlistCount">0 songs</span>
+                      </div>
+                      <div class="playlist-list" id="playlistList"></div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        <div class="vibe-options">
+          <button class="vibe-pill active" data-vibe="90s">90s</button>
+          <button class="vibe-pill more-vibes-btn" id="moreVibesBtn" type="button" aria-haspopup="dialog" aria-controls="vibesModal">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+            <span>More Vibes</span>
+          </button>
+        </div>
+
         <audio id="audio"></audio>
       </div>
+    </div>
+
+    <div class="modal-backdrop" id="vibesModal" hidden>
+      <section class="vibes-modal" role="dialog" aria-modal="true" aria-labelledby="vibesModalTitle">
+        <div class="modal-heading">
+          <div>
+            <p class="eyebrow">Explore your sound</p>
+            <h2 id="vibesModalTitle">All Vibes</h2>
+          </div>
+          <button class="modal-close" id="closeVibesBtn" type="button" aria-label="Close vibes menu">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="genre-grid" id="genreGrid">
+          <button class="genre-card" type="button" data-vibe="newHindi">
+            <i class="fa-solid fa-music" aria-hidden="true"></i>
+            <span>New Hindi</span>
+            <small>Fresh melodies</small>
+          </button>
+          <button class="genre-card" type="button" data-vibe="bhojpuri">
+            <i class="fa-solid fa-drum" aria-hidden="true"></i>
+            <span>Bhojpuri</span>
+            <small>Desi energy</small>
+          </button>
+          <button class="genre-card" type="button" data-vibe="punjabi">
+            <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+            <span>Punjabi</span>
+            <small>High voltage</small>
+          </button>
+          <button class="genre-card" type="button" data-vibe="haryanvi">
+            <i class="fa-solid fa-fire" aria-hidden="true"></i>
+            <span>Haryanvi</span>
+            <small>Raw beats</small>
+          </button>
+          <button class="genre-card" type="button" data-vibe="english">
+            <i class="fa-solid fa-globe" aria-hidden="true"></i>
+            <span>English</span>
+            <small>Global pop</small>
+          </button>
+        </div>
+      </section>
     </div>
 
     <!-- Footer and social links -->
@@ -100,6 +164,10 @@
 
     <script src="songs-90s.js"></script>
     <script src="songs-bhojpuri.js"></script>
+    <script src="songs-newHindi.js"></script>
+    <script src="songs-punjabi.js"></script>
+    <script src="songs-haryanvi.js"></script>
+    <script src="songs-english.js"></script>
     <script src="new.js"></script>
   </body>
 </html>

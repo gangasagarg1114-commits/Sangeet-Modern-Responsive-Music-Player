@@ -2,21 +2,6 @@
    Sangeet - Premium Cinematic Player
 =========================== */
 
-const newHindiSongs = [
-  { title: 'HASEEN', artist: 'TALWIINDER', src: 'songs/newHindi/HASEEN.mp3', cover: 'images/newHindi/haseen.jpg' },
-  { title: 'Ishq', artist: 'Amir Ameer', src: 'songs/newHindi/Ishq.mp3', cover: 'images/newHindi/ishq.jpg' },
-  { title: 'Janam Janam', artist: 'Arijit Singh', src: 'songs/newHindi/Janam Janam.mp3', cover: 'images/newHindi/Janam Janam.jpg' },
-  { title: 'Thodi Der', artist: 'Arjun Kapoor & Shraddha Kapoor', src: 'songs/newHindi/Thodi Der.mp3', cover: 'images/newHindi/Thodi Der.jpg' },
-  { title: 'Acche Lagte Ho', artist: 'Local song', src: 'songs/newHindi/Acche lagte ho.mp3', cover: 'images/newHindi/acche.jpg' },
-  { title: 'Bairan', artist: 'Local song', src: 'songs/newHindi/Bairan.mp3', cover: 'images/newHindi/bairen.jpg' },
-  { title: 'Chalta Rahe', artist: 'Local song', src: 'songs/newHindi/Chalta Rahe.mp3', cover: 'images/newHindi/Chalta Rahe.jpg' },
-  { title: 'Hare Krishna Hare Rama', artist: 'Local song', src: 'songs/newHindi/Hare Krishna Hare Rama.mp3', cover: 'images/newHindi/Hare Krishna.jpg' },
-  { title: 'Main Agar', artist: 'Local song', src: 'songs/newHindi/Main Agar.mp3', cover: 'images/newHindi/Main Agar.jpg' },
-  { title: 'O Sanam', artist: 'Local song', src: 'songs/newHindi/O Sanam.mp3', cover: 'images/newHindi/O Sanam.jpg' },
-  { title: 'Sajjan Raazi', artist: 'Local song', src: 'songs/newHindi/Sajjan Raazi.mp3', cover: 'images/newHindi/Sajjan Raazi.jpg' },
-  { title: 'Tera Mera Rishta', artist: 'Local song', src: 'songs/newHindi/Tera Mera Rishta.mp3', cover: 'images/newHindi/rishta.jpg' }
-];
-
 const vibeConfig = {
   '90s': {
     bg: 'images/90s/90s songs.jpg',
@@ -35,6 +20,24 @@ const vibeConfig = {
     label: 'Bhojpuri',
     apiQuery: 'bhojpuri songs',
     songs: bhojpuriSongs
+  },
+  'punjabi': {
+    bg: 'images/default-cover.jpg',
+    label: 'Punjabi',
+    apiQuery: 'Punjabi songs',
+    songs: punjabiSongs
+  },
+  'haryanvi': {
+    bg: 'images/default-cover.jpg',
+    label: 'Haryanvi',
+    apiQuery: 'Haryanvi songs',
+    songs: haryanviSongs
+  },
+  'english': {
+    bg: 'images/default-cover.jpg',
+    label: 'English',
+    apiQuery: 'English pop songs',
+    songs: englishSongs
   }
 };
 
@@ -56,6 +59,14 @@ const volumeSlider = document.getElementById('volume');
 const progress = document.getElementById('progress');
 const current = document.getElementById('current');
 const durationDisplay = document.getElementById('duration');
+const vibesModal = document.getElementById('vibesModal');
+const moreVibesBtn = document.getElementById('moreVibesBtn');
+const closeVibesBtn = document.getElementById('closeVibesBtn');
+const playlistBtn = document.getElementById('playlistBtn');
+const playlistPanel = document.getElementById('playlistPanel');
+const playlistTitle = document.getElementById('playlistTitle');
+const playlistCount = document.getElementById('playlistCount');
+const playlistList = document.getElementById('playlistList');
 
 let currentPlaylist = [];
 let songIndex = 0;
@@ -63,6 +74,7 @@ let isPlaying = false;
 let isShuffle = false;
 let isRepeat = false;
 let activeVibeKey = 'newHindi';
+let selectionRequestId = 0;
 const GOLD_COLOR = '#f7d77f';
 
 async function fetchSongsFromApi(query) {
@@ -90,25 +102,20 @@ async function fetchSongsFromApi(query) {
 }
 
 function setBackground(vibeKey) {
-  const selectedVibe = vibeConfig[vibeKey];
-  if (!selectedVibe) return;
+  if (!vibeConfig[vibeKey]) return;
 
-  if (selectedVibe.bg.endsWith('.mp4')) {
-    bgVideo.src = selectedVibe.bg;
-    bgVideo.style.display = 'block';
-    bgVideo.play();
-    playerContainer.style.backgroundImage = 'none';
-  } else {
-    bgVideo.style.display = 'none';
-    bgVideo.pause();
-    playerContainer.style.backgroundImage = `url('${selectedVibe.bg}')`;
-  }
+  bgVideo.pause();
+  bgVideo.removeAttribute('src');
+  bgVideo.load();
+  bgVideo.style.display = 'none';
+  playerContainer.style.backgroundImage = 'none';
 }
 
 async function selectVibe(vibeKey, btnElement) {
   const selectedVibe = vibeConfig[vibeKey];
   if (!selectedVibe) return;
 
+  const requestId = ++selectionRequestId;
   activeVibeKey = vibeKey;
 
   document.querySelectorAll('.vibe-pill').forEach((btn) => btn.classList.remove('active'));
@@ -116,13 +123,18 @@ async function selectVibe(vibeKey, btnElement) {
     btnElement.classList.add('active');
   }
 
-  const apiSongs = await fetchSongsFromApi(selectedVibe.apiQuery);
-  // Pehle apne folder ke songs, uske baad online preview songs.
-  currentPlaylist = [...selectedVibe.songs, ...apiSongs];
+  currentPlaylist = [...selectedVibe.songs];
   songIndex = 0;
+  renderPlaylist(selectedVibe.label);
   setBackground(vibeKey);
   loadSong(currentPlaylist[songIndex]);
   playSong();
+
+  const apiSongs = await fetchSongsFromApi(selectedVibe.apiQuery);
+  if (requestId !== selectionRequestId || activeVibeKey !== vibeKey) return;
+
+  currentPlaylist = [...selectedVibe.songs, ...apiSongs];
+  renderPlaylist(selectedVibe.label);
 }
 
 function loadSong(song) {
@@ -132,6 +144,54 @@ function loadSong(song) {
   artist.textContent = song.artist;
   cover.src = song.cover || 'images/default-cover.jpg';
   document.title = `${song.title} • Sangeet`;
+  renderPlaylist(vibeConfig[activeVibeKey]?.label || 'Playlist');
+}
+
+cover.addEventListener('error', () => {
+  if (cover.src.endsWith('/images/default-cover.jpg')) return;
+  cover.src = 'images/default-cover.jpg';
+});
+
+function renderPlaylist(label) {
+  playlistTitle.textContent = label;
+  playlistCount.textContent = `${currentPlaylist.length} ${currentPlaylist.length === 1 ? 'song' : 'songs'}`;
+  playlistList.replaceChildren();
+
+  if (!currentPlaylist.length) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.className = 'playlist-empty';
+    emptyMessage.textContent = 'No songs found for this vibe.';
+    playlistList.append(emptyMessage);
+    return;
+  }
+
+  currentPlaylist.forEach((song, index) => {
+    const songButton = document.createElement('button');
+    songButton.className = 'playlist-song';
+    songButton.type = 'button';
+    songButton.classList.toggle('selected', index === songIndex);
+
+    const number = document.createElement('span');
+    number.className = 'playlist-number';
+    number.textContent = String(index + 1).padStart(2, '0');
+
+    const details = document.createElement('span');
+    details.className = 'playlist-details';
+    const songTitle = document.createElement('strong');
+    songTitle.textContent = song.title;
+    const songArtist = document.createElement('small');
+    songArtist.textContent = song.artist;
+    details.append(songTitle, songArtist);
+
+    songButton.append(number, details);
+    songButton.addEventListener('click', () => {
+      songIndex = index;
+      loadSong(currentPlaylist[songIndex]);
+      closePlaylist();
+      playSong();
+    });
+    playlistList.append(songButton);
+  });
 }
 
 function updatePlayStateUI() {
@@ -186,9 +246,51 @@ function nextSong() {
 
 // Har vibe button ko uski playlist ke saath connect karte hain.
 document.querySelectorAll('.vibe-pill').forEach((button) => {
+  if (button.id === 'moreVibesBtn') return;
   button.addEventListener('click', () => {
     selectVibe(button.dataset.vibe, button);
   });
+});
+
+function closeVibesModal() {
+  vibesModal.hidden = true;
+}
+
+moreVibesBtn.addEventListener('click', () => {
+  vibesModal.hidden = false;
+  closeVibesBtn.focus();
+});
+
+closeVibesBtn.addEventListener('click', closeVibesModal);
+
+function closePlaylist() {
+  playlistPanel.hidden = true;
+  playlistBtn.setAttribute('aria-expanded', 'false');
+}
+
+playlistBtn.addEventListener('click', () => {
+  playlistPanel.hidden = !playlistPanel.hidden;
+  playlistBtn.setAttribute('aria-expanded', String(!playlistPanel.hidden));
+});
+
+vibesModal.addEventListener('click', (event) => {
+  if (event.target === vibesModal) closeVibesModal();
+});
+
+document.querySelectorAll('.genre-card').forEach((button) => {
+  button.addEventListener('click', () => {
+    closeVibesModal();
+    selectVibe(button.dataset.vibe, button);
+  });
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !vibesModal.hidden) closeVibesModal();
+  if (event.key === 'Escape' && !playlistPanel.hidden) closePlaylist();
+});
+
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.playlist-control')) closePlaylist();
 });
 
 playBtn.addEventListener('click', () => {
