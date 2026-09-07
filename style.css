@@ -14,26 +14,27 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-x: hidden;
   margin: 0;
 }
 
-/* Mobile Screen Fit Shell */
+/* Mobile Default Shell & Container */
 .player-shell {
   width: 100%;
   max-width: 440px;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: 6px;
 }
 
 .player-container {
   position: relative;
   width: 100%;
   height: 100%;
-  max-height: 840px;
+  max-height: 780px;
   border-radius: 24px;
   overflow: hidden;
   background: #0b131a;
@@ -60,18 +61,19 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(5, 10, 15, 0.6) 0%, rgba(5, 10, 15, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(5, 10, 15, 0.55) 0%, rgba(5, 10, 15, 0.88) 100%);
   z-index: 1;
 }
 
-/* Top Bar */
+/* Top Bar (Mobile) */
 .top-bar {
   position: relative;
   z-index: 2;
-  padding: 12px 16px 4px;
+  padding: 10px 14px 2px;
   display: flex;
   align-items: center;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .brand-badge {
@@ -81,13 +83,13 @@ body {
 }
 
 .brand-mark svg {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
 }
 
 .brand-wordmark {
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 1rem;
   letter-spacing: 0.5px;
   background: linear-gradient(135deg, #a9ffd0, #1ed760);
   -webkit-background-clip: text;
@@ -98,12 +100,13 @@ body {
 .player-center-wrapper {
   position: relative;
   z-index: 2;
-  padding: 0 12px;
+  padding: 0 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: auto 0;
+  flex-shrink: 1;
 }
 
 .inner-capsule {
@@ -112,23 +115,23 @@ body {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 12px 14px;
+  border-radius: 16px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Square Album Art - Bada Size aur Hover */
+/* Square Album Art (Mobile Compact & Responsive) */
 .cover-circle {
-  width: 150px;
-  height: 150px;
+  width: 125px;
+  height: 125px;
   aspect-ratio: 1 / 1;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
   border: 2px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   flex-shrink: 0;
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
@@ -161,12 +164,12 @@ body {
 
 .song-info {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   width: 100%;
 }
 
 .song-info h2 {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
@@ -175,26 +178,26 @@ body {
 }
 
 .song-info p {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 /* Progress Bar */
 .progress-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .progress-bar input[type="range"] {
   flex: 1;
   accent-color: #1ed760;
-  height: 4px;
+  height: 3px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
@@ -229,18 +232,18 @@ body {
 }
 
 .play-btn {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: linear-gradient(135deg, #63f3a7, #1ed760);
   border: none;
   color: #050a0f;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(30, 215, 96, 0.4);
+  box-shadow: 0 4px 10px rgba(30, 215, 96, 0.4);
   transition: transform 0.2s;
 }
 
@@ -253,26 +256,26 @@ body {
   position: relative;
   z-index: 2;
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
 .vibe-pill {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.8);
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 14px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .vibe-pill.active,
@@ -291,13 +294,13 @@ body {
 .playlist-toggle {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 14px;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s;
@@ -311,14 +314,14 @@ body {
 
 .playlist-panel {
   position: absolute;
-  bottom: 40px;
+  bottom: 35px;
   right: 50%;
   transform: translateX(50%);
-  width: 240px;
+  width: 220px;
   background: #0d1721;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
-  padding: 12px;
+  padding: 10px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
   z-index: 10;
 }
@@ -331,18 +334,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .eyebrow {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.5);
 }
 
 .playlist-heading h3 {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #fff;
 }
 
@@ -352,17 +355,17 @@ body {
 }
 
 .playlist-list {
-  max-height: 120px;
+  max-height: 100px;
   overflow-y: auto;
 }
 
-/* Compact Modern Footer */
+/* Compact Modern Footer (Mobile) */
 .footer {
   position: relative;
   z-index: 2;
-  padding: 10px 16px;
+  padding: 8px 14px;
   text-align: center;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.6);
   background: linear-gradient(180deg, rgba(5, 10, 15, 0.4) 0%, rgba(5, 10, 15, 0.9) 100%);
   backdrop-filter: blur(10px);
@@ -372,8 +375,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .footer p {
@@ -395,13 +399,13 @@ body {
 }
 
 .social-links a {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.75);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;

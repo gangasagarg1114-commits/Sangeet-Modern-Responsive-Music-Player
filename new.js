@@ -7,37 +7,37 @@ const vibeConfig = {
     bg: 'images/90s/90s songs.jpg',
     label: '90s',
     apiQuery: '90s bollywood songs',
-    songs: ninetiesSongs
+    songs: typeof ninetiesSongs !== 'undefined' ? ninetiesSongs : []
   },
   'newHindi': {
     bg: 'images/New Hindi.mp4',
     label: 'New Hindi',
     apiQuery: 'new hindi songs 2024',
-    songs: newHindiSongs
+    songs: typeof newHindiSongs !== 'undefined' ? newHindiSongs : []
   },
   'bhojpuri': {
     bg: 'images/bhojpuri/Bhojpuri.jpg',
     label: 'Bhojpuri',
     apiQuery: 'bhojpuri songs',
-    songs: bhojpuriSongs
+    songs: typeof bhojpuriSongs !== 'undefined' ? bhojpuriSongs : []
   },
   'punjabi': {
     bg: 'images/default-cover.jpg',
     label: 'Punjabi',
     apiQuery: 'Punjabi songs',
-    songs: punjabiSongs
+    songs: typeof punjabiSongs !== 'undefined' ? punjabiSongs : []
   },
   'haryanvi': {
     bg: 'images/default-cover.jpg',
     label: 'Haryanvi',
     apiQuery: 'Haryanvi songs',
-    songs: haryanviSongs
+    songs: typeof haryanviSongs !== 'undefined' ? haryanviSongs : []
   },
   'english': {
     bg: 'images/default-cover.jpg',
     label: 'English',
     apiQuery: 'English pop songs',
-    songs: englishSongs
+    songs: typeof englishSongs !== 'undefined' ? englishSongs : []
   }
 };
 
@@ -54,7 +54,6 @@ const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 const shuffleBtn = document.getElementById('shuffle');
 const repeatBtn = document.getElementById('repeat');
-const volumeSlider = document.getElementById('volume');
 
 const progress = document.getElementById('progress');
 const current = document.getElementById('current');
@@ -73,7 +72,7 @@ let songIndex = 0;
 let isPlaying = false;
 let isShuffle = false;
 let isRepeat = false;
-let activeVibeKey = 'newHindi';
+let activeVibeKey = '90s';
 let selectionRequestId = 0;
 const GOLD_COLOR = '#f7d77f';
 
@@ -245,7 +244,7 @@ function nextSong() {
   playSong();
 }
 
-// Har vibe button ko uski playlist ke saath connect karte hain.
+// Vibe pills event listener
 document.querySelectorAll('.vibe-pill').forEach((button) => {
   if (button.id === 'moreVibesBtn') return;
   button.addEventListener('click', () => {
@@ -269,9 +268,13 @@ function closePlaylist() {
   playlistBtn.setAttribute('aria-expanded', 'false');
 }
 
-playlistBtn.addEventListener('click', () => {
-  playlistPanel.hidden = !playlistPanel.hidden;
-  playlistBtn.setAttribute('aria-expanded', String(!playlistPanel.hidden));
+playlistBtn.addEventListener('click', (event) => {
+  // Agar Ctrl ya Command click nahi kiya hai toh panel toggle karein
+  if (!event.ctrlKey && !event.metaKey) {
+    event.preventDefault();
+    playlistPanel.hidden = !playlistPanel.hidden;
+    playlistBtn.setAttribute('aria-expanded', String(!playlistPanel.hidden));
+  }
 });
 
 vibesModal.addEventListener('click', (event) => {
@@ -291,7 +294,9 @@ document.addEventListener('keydown', (event) => {
 });
 
 document.addEventListener('click', (event) => {
-  if (!event.target.closest('.playlist-control')) closePlaylist();
+  if (!event.target.closest('.playlist-control') && !event.target.closest('#playlistBtn')) {
+    closePlaylist();
+  }
 });
 
 playBtn.addEventListener('click', () => {
@@ -316,11 +321,6 @@ repeatBtn.addEventListener('click', () => {
   repeatBtn.style.color = isRepeat ? GOLD_COLOR : '#b3b3b3';
   repeatBtn.classList.toggle('active-control', isRepeat);
 });
-
-volumeSlider.addEventListener('input', (event) => {
-  audio.volume = Number(event.target.value);
-});
-audio.volume = Number(volumeSlider.value);
 
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration || Number.isNaN(audio.duration)) return;
