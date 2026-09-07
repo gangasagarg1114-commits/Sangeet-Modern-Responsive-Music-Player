@@ -1,3 +1,7 @@
+/* ===========================
+   Sangeet - Premium Cinematic Player
+=========================== */
+
 /* CSS Reset & Variables */
 * {
   margin: 0;
@@ -9,40 +13,42 @@
 body {
   background-color: #050a0f;
   color: #ffffff;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow-x: hidden;
+  overflow: hidden;
   margin: 0;
 }
 
-/* Mobile Default Shell & Container */
+/* Screen Covering Shell & Container */
 .player-shell {
-  width: 100%;
-  max-width: 440px;
+  width: 100vw;
   height: 100vh;
   height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 6px;
+  padding: 0;
 }
 
 .player-container {
   position: relative;
   width: 100%;
   height: 100%;
-  max-height: 780px;
-  border-radius: 24px;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
   overflow: hidden;
   background: #0b131a;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: none;
 }
 
 #bgVideo {
@@ -65,11 +71,11 @@ body {
   z-index: 1;
 }
 
-/* Top Bar (Mobile) */
+/* Top Bar */
 .top-bar {
   position: relative;
   z-index: 2;
-  padding: 10px 14px 2px;
+  padding: 14px 20px 4px;
   display: flex;
   align-items: center;
   width: 100%;
@@ -79,17 +85,17 @@ body {
 .brand-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .brand-mark svg {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
 }
 
 .brand-wordmark {
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 1.1rem;
   letter-spacing: 0.5px;
   background: linear-gradient(135deg, #a9ffd0, #1ed760);
   -webkit-background-clip: text;
@@ -100,13 +106,17 @@ body {
 .player-center-wrapper {
   position: relative;
   z-index: 2;
-  padding: 0 10px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   margin: auto 0;
   flex-shrink: 1;
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .inner-capsule {
@@ -115,23 +125,23 @@ body {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 10px 12px;
+  border-radius: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Square Album Art (Mobile Compact & Responsive) */
+/* Square Album Art */
 .cover-circle {
-  width: 125px;
-  height: 125px;
+  width: 150px;
+  height: 150px;
   aspect-ratio: 1 / 1;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
   border: 2px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   flex-shrink: 0;
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
@@ -164,12 +174,12 @@ body {
 
 .song-info {
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   width: 100%;
 }
 
 .song-info h2 {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
@@ -178,26 +188,26 @@ body {
 }
 
 .song-info p {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 /* Progress Bar */
 .progress-bar {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .progress-bar input[type="range"] {
   flex: 1;
   accent-color: #1ed760;
-  height: 3px;
+  height: 4px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
@@ -214,14 +224,14 @@ body {
 .controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .control-btn {
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: color 0.2s, transform 0.2s;
 }
@@ -232,18 +242,18 @@ body {
 }
 
 .play-btn {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #63f3a7, #1ed760);
   border: none;
   color: #050a0f;
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(30, 215, 96, 0.4);
+  box-shadow: 0 4px 12px rgba(30, 215, 96, 0.4);
   transition: transform 0.2s;
 }
 
@@ -256,26 +266,26 @@ body {
   position: relative;
   z-index: 2;
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  margin: 2px 0;
+  margin: 4px 0;
 }
 
 .vibe-pill {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.8);
-  padding: 4px 10px;
-  border-radius: 14px;
-  font-size: 0.7rem;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 
 .vibe-pill.active,
@@ -294,13 +304,13 @@ body {
 .playlist-toggle {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: 14px;
+  padding: 6px 12px;
+  border-radius: 16px;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s;
@@ -314,14 +324,14 @@ body {
 
 .playlist-panel {
   position: absolute;
-  bottom: 35px;
+  bottom: 40px;
   right: 50%;
   transform: translateX(50%);
-  width: 220px;
+  width: 240px;
   background: #0d1721;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 10px;
+  border-radius: 16px;
+  padding: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
   z-index: 10;
 }
@@ -334,38 +344,38 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .eyebrow {
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.5);
 }
 
 .playlist-heading h3 {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #fff;
 }
 
 #playlistCount {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: #1ed760;
 }
 
 .playlist-list {
-  max-height: 100px;
+  max-height: 120px;
   overflow-y: auto;
 }
 
-/* Compact Modern Footer (Mobile) */
+/* Footer */
 .footer {
   position: relative;
   z-index: 2;
-  padding: 8px 14px;
+  padding: 12px 20px;
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
   background: linear-gradient(180deg, rgba(5, 10, 15, 0.4) 0%, rgba(5, 10, 15, 0.9) 100%);
   backdrop-filter: blur(10px);
@@ -375,7 +385,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   width: 100%;
   flex-shrink: 0;
 }
@@ -395,17 +405,17 @@ body {
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .social-links a {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.75);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -512,34 +522,12 @@ body {
   transform: translateY(-2px);
 }
 
-
 /* ==========================================================
-   LAPTOP & TABLET LANDSCAPE MEDIA QUERY (Rotated Widescreen)
+   DESKTOP & TABLET LANDSCAPE SCREENS
    ========================================================== */
 @media (min-width: 768px) {
-  .player-shell {
-    max-width: 100vw;
-    height: 100vh;
-    padding: 20px;
-  }
-
-  .player-container {
-    max-width: 950px;
-    height: 560px;
-    max-height: 92vh;
-    border-radius: 32px;
-  }
-
-  .top-bar {
-    padding: 20px 32px 10px;
-  }
-
-  .brand-wordmark {
-    font-size: 1.3rem;
-  }
-
   .player-center-wrapper {
-    padding: 0 32px;
+    max-width: 650px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
@@ -549,14 +537,14 @@ body {
   .inner-capsule {
     flex: 1 1 100%;
     flex-direction: row;
-    padding: 22px 32px;
-    gap: 35px;
+    padding: 24px 36px;
+    gap: 40px;
   }
 
   .cover-circle {
-    width: 210px;
-    height: 210px;
-    border-radius: 22px;
+    width: 180px;
+    height: 180px;
+    border-radius: 20px;
     margin-bottom: 0;
   }
 
@@ -608,18 +596,9 @@ body {
   }
 
   .vibe-pill, .playlist-toggle {
-    padding: 7px 15px;
-    font-size: 0.78rem;
+    padding: 8px 16px;
+    font-size: 0.8rem;
     border-radius: 18px;
-  }
-
-  .playlist-panel {
-    bottom: 45px;
-    top: auto;
-    right: 50%;
-    left: auto;
-    transform: translateX(50%);
-    width: 280px;
   }
 
   .footer {
@@ -636,8 +615,8 @@ body {
   }
 
   .social-links a {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     font-size: 0.9rem;
   }
 }

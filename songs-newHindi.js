@@ -7,7 +7,6 @@ const newHindiSongs = [
   { title: 'Acche Lagte Ho', artist: 'Local song', src: 'songs/newHindi/Acche lagte ho.mp3', cover: 'images/newHindi/acche.jpg' },
   { title: 'Bairan', artist: 'Local song', src: 'songs/newHindi/Bairan.mp3', cover: 'images/newHindi/bairen.jpg' },
   { title: 'Chalta Rahe', artist: 'Local song', src: 'songs/newHindi/Chalta Rahe.mp3', cover: 'images/newHindi/Chalta Rahe.jpg' },
-  { title: 'Hare Krishna Hare Rama', artist: 'Local song', src: 'songs/newHindi/Hare Krishna Hare Rama.mp3', cover: 'images/newHindi/Hare Krishna.jpg' },
   { title: 'Main Agar', artist: 'Local song', src: 'songs/newHindi/Main Agar.mp3', cover: 'images/newHindi/Main Agar.jpg' },
   { title: 'O Sanam', artist: 'Local song', src: 'songs/newHindi/O Sanam.mp3', cover: 'images/newHindi/O Sanam.jpg' },
   { title: 'Sajjan Raazi', artist: 'Local song', src: 'songs/newHindi/Sajjan Raazi.mp3', cover: 'images/newHindi/Sajjan Raazi.jpg' },

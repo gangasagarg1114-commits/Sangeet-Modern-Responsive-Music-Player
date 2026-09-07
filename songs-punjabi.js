@@ -1,4 +1,4 @@
 // Punjabi songs playlist
 const punjabiSongs = [
-  { title: 'Punjabi Demo Track', artist: 'Sangeet Demo', src: 'songs/punjabi/demo.mp3', cover: 'images/punjabi/punjabi.jpg' }
+  { title: 'Sajjan Raazi', artist: 'Satinder Sertaaj', src: 'songs/punjabi/Sajjan Raazi.mp3', cover: 'images/punjabi/punjabi.jpg' }
 ];

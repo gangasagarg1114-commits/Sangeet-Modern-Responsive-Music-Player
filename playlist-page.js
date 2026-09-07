@@ -8,7 +8,8 @@ const playlists = {
 };
 
 const params = new URLSearchParams(window.location.search);
-const selected = playlists[params.get('vibe')] || playlists['90s'];
+const vibeKey = params.get('vibe') || '90s';
+const selected = playlists[vibeKey] || playlists['90s'];
 const pageTitle = document.getElementById('pageTitle');
 const pageCount = document.getElementById('pageCount');
 const fullPlaylist = document.getElementById('fullPlaylist');
@@ -16,17 +17,11 @@ const fullPlaylist = document.getElementById('fullPlaylist');
 pageTitle.textContent = `${selected.label} Playlist`;
 pageCount.textContent = `${selected.songs.length} ${selected.songs.length === 1 ? 'song' : 'songs'}`;
 document.title = `${selected.label} Playlist - Sangeet`;
+fullPlaylist.replaceChildren();
 
 selected.songs.forEach((song, index) => {
   const item = document.createElement('article');
   item.className = 'full-playlist-item';
-
-  const artwork = document.createElement('img');
-  artwork.src = song.cover || 'images/default-cover.jpg';
-  artwork.alt = `${song.title} cover`;
-  artwork.addEventListener('error', () => {
-    artwork.src = 'images/default-cover.jpg';
-  }, { once: true });
 
   const number = document.createElement('span');
   number.className = 'playlist-number';
@@ -42,10 +37,18 @@ selected.songs.forEach((song, index) => {
 
   const playLink = document.createElement('a');
   playLink.className = 'track-open';
-  playLink.href = `index.html?vibe=${encodeURIComponent(params.get('vibe') || '90s')}`;
+  playLink.href = `index.html?vibe=${encodeURIComponent(vibeKey)}`;
   playLink.setAttribute('aria-label', `Open ${song.title} in player`);
   playLink.innerHTML = '<i class="fa-solid fa-play" aria-hidden="true"></i>';
 
-  item.append(number, artwork, details, playLink);
+  // Click event taaki user jis song par click kare, player wahi song index load kare
+  item.addEventListener('click', () => {
+    sessionStorage.setItem('sangeet_vibe', vibeKey);
+    sessionStorage.setItem('sangeet_songIndex', index);
+    sessionStorage.setItem('sangeet_currentTime', 0);
+    window.location.href = playLink.href;
+  });
+
+  item.append(number, details, playLink);
   fullPlaylist.append(item);
 });
