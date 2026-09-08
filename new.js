@@ -1,42 +1,30 @@
 /* ===========================
-   Sangeet - Premium Cinematic Player (No-Image Version)
+   Sangeet - Clean Local Player
 =========================== */
 
 const vibeConfig = {
   '90s': {
-    bg: 'images/90s/90s songs.jpg',
     label: '90s',
-    apiQuery: '90s bollywood songs',
     songs: typeof ninetiesSongs !== 'undefined' ? ninetiesSongs : []
   },
   'newHindi': {
-    bg: 'images/New Hindi.mp4',
     label: 'New Hindi',
-    apiQuery: 'new hindi songs 2024',
     songs: typeof newHindiSongs !== 'undefined' ? newHindiSongs : []
   },
   'bhojpuri': {
-    bg: 'images/bhojpuri/Bhojpuri.jpg',
     label: 'Bhojpuri',
-    apiQuery: 'bhojpuri songs',
     songs: typeof bhojpuriSongs !== 'undefined' ? bhojpuriSongs : []
   },
   'punjabi': {
-    bg: 'images/default-cover.jpg',
     label: 'Punjabi',
-    apiQuery: 'Punjabi songs',
     songs: typeof punjabiSongs !== 'undefined' ? punjabiSongs : []
   },
   'haryanvi': {
-    bg: 'images/default-cover.jpg',
     label: 'Haryanvi',
-    apiQuery: 'Haryanvi songs',
     songs: typeof haryanviSongs !== 'undefined' ? haryanviSongs : []
   },
   'english': {
-    bg: 'images/default-cover.jpg',
     label: 'English',
-    apiQuery: 'English pop songs',
     songs: typeof englishSongs !== 'undefined' ? englishSongs : []
   }
 };
@@ -68,35 +56,10 @@ let isPlaying = false;
 let isShuffle = false;
 let isRepeat = false;
 let activeVibeKey = '90s';
-let selectionRequestId = 0;
 const ACCENT_COLOR = '#00f2fe';
-
-async function fetchSongsFromApi(query) {
-  const url = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=5`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('API request failed');
-
-    const data = await response.json();
-    const tracks = Array.isArray(data?.data) ? data.data : [];
-
-    return tracks
-      .filter((track) => track?.preview)
-      .map((track) => ({
-        title: track.title || 'Unknown Track',
-        artist: track.artist?.name || 'Unknown Artist',
-        src: track.preview
-      }));
-  } catch (error) {
-    console.warn('API fetch failed, using local fallback songs.', error);
-    return [];
-  }
-}
 
 function setBackground(vibeKey) {
   if (!vibeConfig[vibeKey]) return;
-
   bgVideo.pause();
   bgVideo.removeAttribute('src');
   bgVideo.load();
@@ -104,11 +67,10 @@ function setBackground(vibeKey) {
   playerContainer.style.backgroundImage = 'none';
 }
 
-async function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime = 0, autoPlay = false) {
+function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime = 0, autoPlay = false) {
   const selectedVibe = vibeConfig[vibeKey];
   if (!selectedVibe) return;
 
-  const requestId = ++selectionRequestId;
   activeVibeKey = vibeKey;
 
   document.querySelectorAll('.vibe-pill').forEach((btn) => btn.classList.remove('active'));
@@ -126,11 +88,6 @@ async function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime
   if (autoPlay) {
     playSong();
   }
-
-  const apiSongs = await fetchSongsFromApi(selectedVibe.apiQuery);
-  if (requestId !== selectionRequestId || activeVibeKey !== vibeKey) return;
-
-  currentPlaylist = [...selectedVibe.songs, ...apiSongs];
 }
 
 function loadSong(song, startPlaybackTime = 0) {
@@ -184,8 +141,7 @@ function nextSong() {
   if (currentPlaylist.length === 0) return;
 
   if (isShuffle) {
-    const nextIndex = Math.floor(Math.random() * currentPlaylist.length);
-    songIndex = nextIndex;
+    songIndex = Math.floor(Math.random() * currentPlaylist.length);
   } else {
     songIndex += 1;
     if (songIndex >= currentPlaylist.length) songIndex = 0;
