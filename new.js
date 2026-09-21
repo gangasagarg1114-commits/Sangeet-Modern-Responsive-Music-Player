@@ -1,5 +1,5 @@
 /* ===========================
-   Sangeet - Clean Local Player
+   Sangeet - Single Page App (SPA) Local Player with Modal Playlist
 =========================== */
 
 const vibeConfig = {
@@ -45,10 +45,18 @@ const repeatBtn = document.getElementById('repeat');
 const progress = document.getElementById('progress');
 const current = document.getElementById('current');
 const durationDisplay = document.getElementById('duration');
+
+// Modals
 const vibesModal = document.getElementById('vibesModal');
 const moreVibesBtn = document.getElementById('moreVibesBtn');
 const closeVibesBtn = document.getElementById('closeVibesBtn');
+
+const playlistModal = document.getElementById('playlistModal');
 const playlistBtn = document.getElementById('playlistBtn');
+const closePlaylistBtn = document.getElementById('closePlaylistBtn');
+const pageCount = document.getElementById('pageCount');
+const searchInput = document.getElementById('searchInput');
+const fullPlaylist = document.getElementById('fullPlaylist');
 
 let currentPlaylist = [];
 let songIndex = 0;
@@ -78,7 +86,6 @@ function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime = 0, 
     btnElement.classList.add('active');
   }
 
-  playlistBtn.href = `playlist.html?vibe=${encodeURIComponent(vibeKey)}`;
   currentPlaylist = [...selectedVibe.songs];
   songIndex = restoreSongIndex < currentPlaylist.length ? restoreSongIndex : 0;
   
@@ -151,6 +158,89 @@ function nextSong() {
   playSong();
 }
 
+// Playlist Modal Rendering & Live Search Logic
+function renderPlaylistSongs(songsToRender) {
+  if (!fullPlaylist) return;
+  fullPlaylist.replaceChildren();
+  const activeVibeData = vibeConfig[activeVibeKey];
+  
+  if (pageCount) {
+    pageCount.textContent = `${songsToRender.length} ${songsToRender.length === 1 ? 'song' : 'songs'}`;
+  }
+
+  if (!songsToRender.length) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.className = 'playlist-empty';
+    emptyMessage.textContent = 'No matching songs found.';
+    fullPlaylist.append(emptyMessage);
+    return;
+  }
+
+  songsToRender.forEach((song) => {
+    const originalIndex = activeVibeData.songs.findIndex((s) => s.src === song.src);
+
+    const item = document.createElement('article');
+    item.className = 'full-playlist-item';
+
+    const number = document.createElement('span');
+    number.className = 'playlist-number';
+    number.textContent = String(originalIndex !== -1 ? originalIndex + 1 : 1).padStart(2, '0');
+
+    const details = document.createElement('div');
+    details.className = 'playlist-details';
+    const songTitle = document.createElement('strong');
+    songTitle.textContent = song.title;
+    const songArtist = document.createElement('small');
+    songArtist.textContent = song.artist;
+    details.append(songTitle, songArtist);
+
+    const playIconSpan = document.createElement('button');
+    playIconSpan.className = 'track-open';
+    playIconSpan.setAttribute('type', 'button');
+    playIconSpan.innerHTML = '<i class="fa-solid fa-play" aria-hidden="true"></i>';
+
+    item.addEventListener('click', () => {
+      songIndex = originalIndex !== -1 ? originalIndex : 0;
+      loadSong(currentPlaylist[songIndex]);
+      playSong();
+      playlistModal.hidden = true; // Close modal seamlessly while music keeps playing
+    });
+
+    item.append(number, details, playIconSpan);
+    fullPlaylist.append(item);
+  });
+}
+
+playlistBtn.addEventListener('click', () => {
+  const activeVibeData = vibeConfig[activeVibeKey];
+  if (searchInput) searchInput.value = '';
+  renderPlaylistSongs(activeVibeData.songs);
+  playlistModal.hidden = false;
+  if (searchInput) searchInput.focus();
+});
+
+closePlaylistBtn.addEventListener('click', () => {
+  playlistModal.hidden = true;
+});
+
+playlistModal.addEventListener('click', (event) => {
+  if (event.target === playlistModal) playlistModal.hidden = true;
+});
+
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    const activeVibeData = vibeConfig[activeVibeKey];
+    const filtered = activeVibeData.songs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(query) ||
+        song.artist.toLowerCase().includes(query)
+    );
+    renderPlaylistSongs(filtered);
+  });
+}
+
+// More Vibes Modal Logic
 document.querySelectorAll('.vibe-pill').forEach((button) => {
   if (button.id === 'moreVibesBtn') return;
   button.addEventListener('click', () => {
@@ -183,7 +273,10 @@ document.querySelectorAll('.genre-card').forEach((button) => {
 });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !vibesModal.hidden) closeVibesModal();
+  if (event.key === 'Escape') {
+    if (!vibesModal.hidden) closeVibesModal();
+    if (!playlistModal.hidden) playlistModal.hidden = true;
+  }
 });
 
 playBtn.addEventListener('click', () => {
@@ -245,12 +338,9 @@ function formatTime(time) {
   return `${min}:${sec < 10 ? '0' + sec : sec}`;
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const userVibe = urlParams.get('vibe') || sessionStorage.getItem('sangeet_vibe') || '90s';
-const userSongIndex = Number(sessionStorage.getItem('sangeet_songIndex')) || 0;
-const userCurrentTime = Number(sessionStorage.getItem('sangeet_currentTime')) || 0;
+const savedVibe = sessionStorage.getItem('sangeet_vibe') || '90s';
+const savedSongIndex = Number(sessionStorage.getItem('sangeet_songIndex')) || 0;
+const savedCurrentTime = Number(sessionStorage.getItem('sangeet_currentTime')) || 0;
 
-const isFromPlaylist = urlParams.has('vibe');
-const initialVibeButton = document.querySelector(`[data-vibe="${userVibe}"]`);
-
-selectVibe(userVibe, initialVibeButton || document.querySelector('[data-vibe="90s"]'), userSongIndex, userCurrentTime, isFromPlaylist);
+const initialVibeButton = document.querySelector(`[data-vibe="${savedVibe}"]`);
+selectVibe(savedVibe, initialVibeButton || document.querySelector('[data-vibe="90s"]'), savedSongIndex, savedCurrentTime, false);

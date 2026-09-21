@@ -75,10 +75,10 @@
             </button>
             <div class="utility-controls">
               <div class="playlist-control">
-                <a class="playlist-toggle" id="playlistBtn" href="playlist.html?vibe=90s">
+                <button class="playlist-toggle" id="playlistBtn" type="button">
                   <i class="fa-solid fa-list-music" aria-hidden="true"></i>
                   <span>Playlist</span>
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -98,6 +98,7 @@
       </div>
     </div>
 
+    <!-- More Vibes Modal -->
     <div class="modal-backdrop" id="vibesModal" hidden>
       <section class="vibes-modal" role="dialog" aria-modal="true" aria-labelledby="vibesModalTitle">
         <div class="modal-heading">
@@ -136,6 +137,27 @@
             <small>Global pop</small>
           </button>
         </div>
+      </section>
+    </div>
+
+    <!-- Integrated Playlist Modal (Prevents Audio Interruption) -->
+    <div class="modal-backdrop" id="playlistModal" hidden>
+      <section class="vibes-modal playlist-modal-box" role="dialog" aria-modal="true">
+        <div class="modal-heading">
+          <div>
+            <p class="eyebrow" id="playlistEyebrow">Sangeet collection</p>
+            <h2 id="playlistModalTitle">Playlist</h2>
+            <p id="pageCount">0 songs</p>
+          </div>
+          <button class="modal-close" id="closePlaylistBtn" type="button" aria-label="Close playlist">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="text" id="searchInput" placeholder="Search song or artist..." aria-label="Search songs" />
+        </div>
+        <section class="full-playlist" id="fullPlaylist" aria-label="Songs in playlist"></section>
       </section>
     </div>
 
