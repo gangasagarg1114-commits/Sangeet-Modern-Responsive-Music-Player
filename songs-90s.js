@@ -100,7 +100,7 @@ const ninetiesSongs = [
   { title: "Humen Tumse Pyar Kitna", artist: "Rajesh Khanna_Hema Malini", src: "songs/90s/Humen Tumse Pyar Kitna.mp3", cover: "images/90s/90s songs.jpg" },
   { title: "Aankh Milate Darr Lagta Hai", artist: "Raja", src: "songs/90s/Aankh Milate Darr Lagta Hai.mp3", cover: "images/90s/90s songs.jpg" },
   { title: "Akhiyaan Milaoon Kabhi", artist: "Raja", src: "songs/90s/Akhiyaan Milaoon Kabhi.mp3", cover: "images/90s/90s songs.jpg" },
-  { title: "Jaa Sajna Tujhko Bhula", artist: "Raja", src: "songs/90s/Jaa Sajna Tujhko Bhulamp3", cover: "images/90s/90s songs.jpg" },
+  { title: "Jaa Sajna Tujhko Bhula", artist: "Raja", src: "songs/90s/Jaa Sajna Tujhko Bhula.mp3", cover: "images/90s/90s songs.jpg" },
   { title: "Jhuki Jhuki Nazar Teri Kamaal", artist: "Alka Yagnik_Udit Narayan", src: "songs/90s/Jhuki Jhuki Nazar Teri Kamaal.mp3", cover: "images/90s/90s songs.jpg" },
   { title: "Paa Liya Hain Pyar Tera", artist: "Alka Yagnik_Udit Narayan", src: "songs/90s/Paa Liya Hain Pyar Tera.mp3", cover: "images/90s/90s songs.jpg" },
   { title: "Phool Maangu Na Bahaar Maangu", artist: "Raja", src: "songs/90s/Phool Maangu Na Bahaar Maangu.mp3", cover: "images/90s/90s songs.jpg" },

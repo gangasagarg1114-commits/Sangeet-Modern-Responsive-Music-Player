@@ -1,5 +1,6 @@
 /* ===========================
-   Sangeet - Cyber Mint & Emerald Edition (Best UI)
+   Sangeet - Cyber Mint & Emerald Edition
+   Background Image Edition
 =========================== */
 
 * {
@@ -22,6 +23,10 @@ body {
   overflow: hidden;
   margin: 0;
 }
+
+/* ===========================
+   MAIN PLAYER
+=========================== */
 
 .player-shell {
   width: 100vw;
@@ -49,7 +54,11 @@ body {
   border: none;
 }
 
-#bgVideo {
+/* ===========================
+   BACKGROUND IMAGE
+=========================== */
+
+#bgImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -57,17 +66,27 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  opacity: 0.55;
+  filter: brightness(0.6) saturate(1.15);
 }
 
+/* Background dark overlay */
 .bg-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(5, 11, 20, 0.6) 0%, rgba(5, 11, 20, 0.92) 100%);
+  background: 
+    radial-gradient(circle at center, rgba(0, 242, 254, 0.08), transparent 45%),
+    linear-gradient(180deg, rgba(5, 11, 20, 0.58) 0%, rgba(5, 11, 20, 0.94) 100%);
   z-index: 1;
+  pointer-events: none;
 }
+
+/* ===========================
+   TOP BAR
+=========================== */
 
 .top-bar {
   position: relative;
@@ -99,6 +118,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+/* ===========================
+   CENTER PLAYER
+=========================== */
+
 .player-center-wrapper {
   position: relative;
   z-index: 2;
@@ -127,6 +150,10 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+/* ===========================
+   COVER
+=========================== */
 
 .cover-circle {
   width: 140px;
@@ -157,17 +184,24 @@ body {
   border-color: rgba(0, 242, 254, 0.6);
 }
 
+/* ===========================
+   TRACK
+=========================== */
+
 .track-core {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 0;
 }
 
 .song-info {
   text-align: center;
   margin-bottom: 8px;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .song-info h2 {
@@ -176,14 +210,38 @@ body {
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: clip;
+  max-width: 100%;
+}
+
+/* Long song title scrolling */
+.song-info h2.scrolling {
+  width: max-content;
+  max-width: none;
+  animation: songTitleScroll var(--scroll-duration, 8s) linear infinite alternate;
+}
+
+@keyframes songTitleScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--scroll-distance)));
+  }
 }
 
 .song-info p {
   font-size: 0.78rem;
   color: rgba(255, 255, 255, 0.6);
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+/* ===========================
+   PROGRESS
+=========================== */
 
 .progress-bar {
   display: flex;
@@ -203,6 +261,10 @@ body {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
 }
+
+/* ===========================
+   CONTROLS
+=========================== */
 
 .bottom-row {
   display: flex;
@@ -251,6 +313,10 @@ body {
   transform: scale(1.06);
 }
 
+/* ===========================
+   VIBE OPTIONS
+=========================== */
+
 .vibe-options {
   position: relative;
   z-index: 2;
@@ -285,6 +351,10 @@ body {
   font-weight: 600;
 }
 
+/* ===========================
+   PLAYLIST BUTTON
+=========================== */
+
 .utility-controls {
   position: relative;
   margin-left: 2px;
@@ -310,6 +380,10 @@ body {
   border-color: rgba(0, 242, 254, 0.4);
   color: #00f2fe;
 }
+
+/* ===========================
+   FOOTER
+=========================== */
 
 .footer {
   position: relative;
@@ -338,6 +412,10 @@ body {
   font-weight: 700;
 }
 
+/* ===========================
+   SOCIAL LINKS
+=========================== */
+
 .social-links {
   display: flex;
   justify-content: center;
@@ -365,6 +443,10 @@ body {
   color: #00f2fe;
 }
 
+/* ===========================
+   MODAL BACKDROP
+=========================== */
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -380,6 +462,10 @@ body {
 .modal-backdrop[hidden] {
   display: none;
 }
+
+/* ===========================
+   MODAL
+=========================== */
 
 .vibes-modal {
   background: #0d1726;
@@ -408,6 +494,14 @@ body {
   color: #fff;
 }
 
+.eyebrow {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .modal-close {
   background: none;
   border: none;
@@ -419,6 +513,10 @@ body {
 .modal-close:hover {
   color: #00f2fe;
 }
+
+/* ===========================
+   GENRE GRID
+=========================== */
 
 .genre-grid {
   display: grid;
@@ -462,12 +560,16 @@ body {
   transform: translateY(-2px);
 }
 
-/* Playlist Modal Items & Search Box */
+/* ===========================
+   SEARCH BOX
+=========================== */
+
 .search-box {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 12px;
 }
 
 .search-box i {
@@ -475,6 +577,7 @@ body {
   left: 14px;
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.82rem;
+  pointer-events: none;
 }
 
 .search-box input {
@@ -498,6 +601,10 @@ body {
 .search-box input::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
+
+/* ===========================
+   FULL PLAYLIST
+=========================== */
 
 .full-playlist {
   max-height: 320px;
@@ -551,6 +658,7 @@ body {
   gap: 2px;
   flex: 1;
   overflow: hidden;
+  min-width: 0;
 }
 
 .playlist-details strong {
@@ -594,6 +702,10 @@ body {
   font-size: 0.85rem;
 }
 
+/* ===========================
+   DESKTOP
+=========================== */
+
 @media (min-width: 768px) {
   .player-center-wrapper {
     max-width: 650px;
@@ -622,6 +734,7 @@ body {
 
   .track-core {
     align-items: flex-start;
+    min-width: 0;
   }
 
   .song-info {
@@ -667,7 +780,8 @@ body {
     gap: 14px;
   }
 
-  .vibe-pill, .playlist-toggle {
+  .vibe-pill,
+  .playlist-toggle {
     padding: 8px 16px;
     font-size: 0.8rem;
     border-radius: 18px;
@@ -690,5 +804,104 @@ body {
     width: 32px;
     height: 32px;
     font-size: 0.9rem;
+  }
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 767px) {
+  .player-center-wrapper {
+    max-width: 420px;
+  }
+
+  .inner-capsule {
+    padding: 26px 18px; /* Taller & spacious capsule on mobile */
+  }
+
+  .cover-circle {
+    width: 125px;
+    height: 125px;
+  }
+
+  .cover-circle i {
+    font-size: 2.7rem;
+  }
+
+  .controls {
+    gap: 14px;
+  }
+
+  .vibe-options {
+    padding: 0 8px;
+  }
+
+  .footer {
+    padding: 10px 15px;
+  }
+}
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width: 480px) {
+  .top-bar {
+    padding: 12px 15px 4px;
+  }
+
+  .brand-mark svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .brand-wordmark {
+    font-size: 1rem;
+  }
+
+  .player-center-wrapper {
+    padding: 0 10px;
+  }
+
+  .inner-capsule {
+    padding: 20px 14px;
+  }
+
+  .cover-circle {
+    width: 110px;
+    height: 110px;
+  }
+
+  .cover-circle i {
+    font-size: 2.4rem;
+  }
+
+  .controls {
+    gap: 12px;
+  }
+
+  .control-btn {
+    font-size: 0.85rem;
+  }
+
+  .play-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
+  }
+
+  .vibe-pill,
+  .playlist-toggle {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+
+  .genre-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vibes-modal {
+    padding: 16px;
   }
 }

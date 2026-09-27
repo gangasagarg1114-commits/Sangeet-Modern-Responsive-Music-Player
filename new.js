@@ -2,6 +2,7 @@
    Sangeet - Single Page App (SPA) Local Player with Modal Playlist
 =========================== */
 
+// VIBES & GENRES CONFIGURATION
 const vibeConfig = {
   '90s': {
     label: '90s',
@@ -29,12 +30,14 @@ const vibeConfig = {
   }
 };
 
+// DOM ELEMENTS SELECTION
 const playerContainer = document.getElementById('playerContainer');
 const bgVideo = document.getElementById('bgVideo');
 const audio = document.getElementById('audio');
 const title = document.getElementById('title');
 const artist = document.getElementById('artist');
 
+// CONTROL BUTTONS
 const playBtn = document.getElementById('play');
 const playIcon = document.getElementById('playIcon');
 const prevBtn = document.getElementById('prev');
@@ -42,11 +45,12 @@ const nextBtn = document.getElementById('next');
 const shuffleBtn = document.getElementById('shuffle');
 const repeatBtn = document.getElementById('repeat');
 
+// PROGRESS BAR & TIMINGS
 const progress = document.getElementById('progress');
 const current = document.getElementById('current');
 const durationDisplay = document.getElementById('duration');
 
-// Modals
+// MODAL POPUPS (Vibes & Playlist)
 const vibesModal = document.getElementById('vibesModal');
 const moreVibesBtn = document.getElementById('moreVibesBtn');
 const closeVibesBtn = document.getElementById('closeVibesBtn');
@@ -58,6 +62,7 @@ const pageCount = document.getElementById('pageCount');
 const searchInput = document.getElementById('searchInput');
 const fullPlaylist = document.getElementById('fullPlaylist');
 
+// PLAYER STATE VARIABLES
 let currentPlaylist = [];
 let songIndex = 0;
 let isPlaying = false;
@@ -66,15 +71,19 @@ let isRepeat = false;
 let activeVibeKey = '90s';
 const ACCENT_COLOR = '#00f2fe';
 
+// BACKGROUND SETTER FUNCTION
 function setBackground(vibeKey) {
   if (!vibeConfig[vibeKey]) return;
-  bgVideo.pause();
-  bgVideo.removeAttribute('src');
-  bgVideo.load();
-  bgVideo.style.display = 'none';
+  if (bgVideo) {
+    bgVideo.pause();
+    bgVideo.removeAttribute('src');
+    bgVideo.load();
+    bgVideo.style.display = 'none';
+  }
   playerContainer.style.backgroundImage = 'none';
 }
 
+// VIBE SELECTION & SWITCHING
 function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime = 0, autoPlay = false) {
   const selectedVibe = vibeConfig[vibeKey];
   if (!selectedVibe) return;
@@ -97,6 +106,7 @@ function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime = 0, 
   }
 }
 
+// LOAD SONG DETAILS INTO AUDIO PLAYER
 function loadSong(song, startPlaybackTime = 0) {
   if (!song) return;
   audio.src = song.src;
@@ -109,6 +119,7 @@ function loadSong(song, startPlaybackTime = 0) {
   }
 }
 
+// UPDATE PLAY/PAUSE ICON UI
 function updatePlayStateUI() {
   if (isPlaying) {
     playIcon.classList.replace('fa-play', 'fa-pause');
@@ -119,6 +130,7 @@ function updatePlayStateUI() {
   }
 }
 
+// PLAY AUDIO FUNCTION
 function playSong() {
   if (!currentPlaylist.length) return;
   audio.play().then(() => {
@@ -130,12 +142,14 @@ function playSong() {
   });
 }
 
+// PAUSE AUDIO FUNCTION
 function pauseSong() {
   audio.pause();
   isPlaying = false;
   updatePlayStateUI();
 }
 
+// PREVIOUS SONG LOGIC
 function prevSong() {
   if (currentPlaylist.length === 0) return;
   songIndex -= 1;
@@ -144,6 +158,7 @@ function prevSong() {
   playSong();
 }
 
+// NEXT SONG LOGIC (Supports Shuffle)
 function nextSong() {
   if (currentPlaylist.length === 0) return;
 
@@ -158,7 +173,7 @@ function nextSong() {
   playSong();
 }
 
-// Playlist Modal Rendering & Live Search Logic
+// PLAYLIST MODAL RENDERING & LIVE SEARCH LOGIC
 function renderPlaylistSongs(songsToRender) {
   if (!fullPlaylist) return;
   fullPlaylist.replaceChildren();
@@ -203,7 +218,7 @@ function renderPlaylistSongs(songsToRender) {
       songIndex = originalIndex !== -1 ? originalIndex : 0;
       loadSong(currentPlaylist[songIndex]);
       playSong();
-      playlistModal.hidden = true; // Close modal seamlessly while music keeps playing
+      playlistModal.hidden = true;
     });
 
     item.append(number, details, playIconSpan);
@@ -211,6 +226,7 @@ function renderPlaylistSongs(songsToRender) {
   });
 }
 
+// PLAYLIST MODAL OPEN/CLOSE EVENT LISTENERS
 playlistBtn.addEventListener('click', () => {
   const activeVibeData = vibeConfig[activeVibeKey];
   if (searchInput) searchInput.value = '';
@@ -227,6 +243,7 @@ playlistModal.addEventListener('click', (event) => {
   if (event.target === playlistModal) playlistModal.hidden = true;
 });
 
+// REAL-TIME SEARCH FILTER IN PLAYLIST
 if (searchInput) {
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
@@ -240,7 +257,7 @@ if (searchInput) {
   });
 }
 
-// More Vibes Modal Logic
+// MORE VIBES MODAL EVENT LISTENERS
 document.querySelectorAll('.vibe-pill').forEach((button) => {
   if (button.id === 'moreVibesBtn') return;
   button.addEventListener('click', () => {
@@ -272,6 +289,7 @@ document.querySelectorAll('.genre-card').forEach((button) => {
   });
 });
 
+// KEYBOARD SHORTCUTS (ESC to close modals)
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     if (!vibesModal.hidden) closeVibesModal();
@@ -279,6 +297,7 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+// PLAYER CONTROLS BUTTON EVENT LISTENERS
 playBtn.addEventListener('click', () => {
   if (isPlaying) {
     pauseSong();
@@ -302,6 +321,7 @@ repeatBtn.addEventListener('click', () => {
   repeatBtn.classList.toggle('active-control', isRepeat);
 });
 
+// AUDIO PROGRESS & SESSION STORAGE UPDATES
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration || Number.isNaN(audio.duration)) return;
   const progressPercent = (audio.currentTime / audio.duration) * 100;
@@ -317,6 +337,7 @@ audio.addEventListener('loadedmetadata', () => {
   durationDisplay.textContent = formatTime(audio.duration);
 });
 
+// WHEN TRACK ENDS (Handles Repeat or Next Song)
 audio.addEventListener('ended', () => {
   if (isRepeat) {
     audio.currentTime = 0;
@@ -326,11 +347,13 @@ audio.addEventListener('ended', () => {
   }
 });
 
+// SEEK BAR INPUT LISTENER
 progress.addEventListener('input', () => {
   if (!audio.duration || Number.isNaN(audio.duration)) return;
   audio.currentTime = (progress.value / 100) * audio.duration;
 });
 
+// TIME FORMATTING HELPER FUNCTION
 function formatTime(time) {
   if (Number.isNaN(time) || !Number.isFinite(time)) return '0:00';
   const min = Math.floor(time / 60);
@@ -338,9 +361,15 @@ function formatTime(time) {
   return `${min}:${sec < 10 ? '0' + sec : sec}`;
 }
 
+// INITIALIZE PLAYER STATE FROM SESSION STORAGE
 const savedVibe = sessionStorage.getItem('sangeet_vibe') || '90s';
 const savedSongIndex = Number(sessionStorage.getItem('sangeet_songIndex')) || 0;
 const savedCurrentTime = Number(sessionStorage.getItem('sangeet_currentTime')) || 0;
 
 const initialVibeButton = document.querySelector(`[data-vibe="${savedVibe}"]`);
 selectVibe(savedVibe, initialVibeButton || document.querySelector('[data-vibe="90s"]'), savedSongIndex, savedCurrentTime, false);
+
+// FIX: Ensure song info updates immediately on load
+if (currentPlaylist.length > 0 && currentPlaylist[songIndex]) {
+  loadSong(currentPlaylist[songIndex], savedCurrentTime);
+}
