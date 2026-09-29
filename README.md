@@ -1,6 +1,6 @@
 # Sangeet - Modern Responsive Music Player
 
-Sangeet ek lightweight Spotify-style music player hai jo plain HTML, CSS aur JavaScript par bana hai. Isme local songs, genre-wise playlists, responsive layout, playlist page, volume control aur More Vibes modal available hain.
+Sangeet ek lightweight Spotify-style music player hai jo plain HTML, CSS aur JavaScript par bana hai. Isme local songs, genre-wise playlists, responsive layout, playlist page, More Vibes modal available hain.
 
 ## Features
 
@@ -14,7 +14,6 @@ Sangeet ek lightweight Spotify-style music player hai jo plain HTML, CSS aur Jav
   - English
 - Har genre ki independent JavaScript playlist file
 - Local audio files ke liye folder-based playlist system
-- Volume control
 - Shuffle and repeat controls
 - Progress bar and duration display
 - Dedicated playlist page

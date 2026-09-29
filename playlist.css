@@ -250,3 +250,20 @@ body.playlist-page-body {
     padding: 12px 16px;
   }
 }
+
+/* ==========================================================
+   EXTRA UTILITY VIBES SUPPORT (SAVED AS COMMENTS)
+   ========================================================== */
+/*
+.vibes-scroll-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 15px;
+  scrollbar-width: none;
+}
+
+.vibes-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+*/

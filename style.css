@@ -905,3 +905,26 @@ body {
     padding: 16px;
   }
 }
+
+/* ===========================
+   EXTRA VIBES & MODAL CSS (SAVED AS COMMENTS)
+=========================== */
+/*
+.more-vibes-btn {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: rgba(0, 242, 254, 0.3);
+  color: #00f2fe;
+}
+
+.vibes-scroll-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 15px;
+  scrollbar-width: none;
+}
+
+.vibes-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+*/

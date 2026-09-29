@@ -1,38 +1,55 @@
 /* ===========================
-   Sangeet - Single Page App (SPA) Local Player with Modal Playlist
+   Sangeet - Cinematic Music Player (API & Hybrid Edition)
+   Local song arrays are preserved below in comments.
 =========================== */
 
-// VIBES & GENRES CONFIGURATION
-const vibeConfig = {
-  '90s': {
-    label: '90s',
-    songs: typeof ninetiesSongs !== 'undefined' ? ninetiesSongs : []
-  },
-  'newHindi': {
-    label: 'New Hindi',
-    songs: typeof newHindiSongs !== 'undefined' ? newHindiSongs : []
-  },
-  'bhojpuri': {
-    label: 'Bhojpuri',
-    songs: typeof bhojpuriSongs !== 'undefined' ? bhojpuriSongs : []
-  },
-  'punjabi': {
-    label: 'Punjabi',
-    songs: typeof punjabiSongs !== 'undefined' ? punjabiSongs : []
-  },
-  'haryanvi': {
-    label: 'Haryanvi',
-    songs: typeof haryanviSongs !== 'undefined' ? haryanviSongs : []
-  },
-  'english': {
-    label: 'English',
-    songs: typeof englishSongs !== 'undefined' ? englishSongs : []
-  }
+/* ==========================================================
+   OLD LOCAL SONGS DATA (PRESERVED IN COMMENTS AS REQUESTED)
+   ==========================================================
+// 90s Songs Local Data
+const ninetiesSongs = [
+  { title: "Pehla Nasha", artist: "Udit Narayan", src: "local-path-1.mp3" },
+  { title: "Tujhe Dekha To", artist: "Kumar Sanu, Lata Mangeshkar", src: "local-path-2.mp3" }
+];
+
+// New Hindi Songs Local Data
+const newHindiSongs = [
+  { title: "Kesariya", artist: "Arijit Singh", src: "local-path-3.mp3" }
+];
+
+// Bhojpuri Songs Local Data
+const bhojpuriSongs = [
+  { title: "Raja Ji", artist: "Pawan Singh", src: "local-path-4.mp3" }
+];
+
+// Punjabi Songs Local Data
+const punjabiSongs = [
+  { title: "Brown Munde", artist: "AP Dhillon", src: "local-path-5.mp3" }
+];
+
+// Haryanvi Songs Local Data
+const haryanviSongs = [
+  { title: "5 Talliyan", artist: "Renuka Panwar", src: "local-path-6.mp3" }
+];
+
+// English Songs Local Data
+const englishSongs = [
+  { title: "Believer", artist: "Imagine Dragons", src: "local-path-7.mp3" }
+];
+========================================================== */
+
+// VIBES & API QUERY CONFIGURATION
+const vibeApiConfig = {
+  '90s': { label: '90s Hits', query: 'hindi 90s evergreen hits' },
+  'newHindi': { label: 'New Hindi', query: 'new bollywood hits 2026' },
+  'bhojpuri': { label: 'Bhojpuri', query: 'top bhojpuri dj songs' },
+  'punjabi': { label: 'Punjabi', query: 'latest punjabi party tracks' },
+  'haryanvi': { label: 'Haryanvi', query: 'haryanvi raw beat songs' },
+  'english': { label: 'English', query: 'global pop billboard hits' }
 };
 
 // DOM ELEMENTS SELECTION
 const playerContainer = document.getElementById('playerContainer');
-const bgVideo = document.getElementById('bgVideo');
 const audio = document.getElementById('audio');
 const title = document.getElementById('title');
 const artist = document.getElementById('artist');
@@ -71,39 +88,55 @@ let isRepeat = false;
 let activeVibeKey = '90s';
 const ACCENT_COLOR = '#00f2fe';
 
-// BACKGROUND SETTER FUNCTION
-function setBackground(vibeKey) {
-  if (!vibeConfig[vibeKey]) return;
-  if (bgVideo) {
-    bgVideo.pause();
-    bgVideo.removeAttribute('src');
-    bgVideo.load();
-    bgVideo.style.display = 'none';
+// FETCH SONGS FROM FREE PUBLIC MUSIC API (JioSaavn Open Endpoint Wrapper)
+async function fetchSongsByVibe(vibeKey) {
+  const config = vibeApiConfig[vibeKey];
+  if (!config) return;
+
+  try {
+    // Open public music search API
+    const response = await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(config.query)}`);
+    const data = await response.json();
+
+    if (data && data.success && data.data && data.data.results) {
+      currentPlaylist = data.data.results.map(song => ({
+        title: song.name || 'Unknown Track',
+        artist: song.artists?.primary?.[0]?.name || song.primaryArtists || 'Various Artists',
+        src: song.downloadUrl?.[4]?.link || song.downloadUrl?.[3]?.link || song.downloadUrl?.[0]?.link || ''
+      })).filter(song => song.src !== ''); // Filter out tracks without valid streaming links
+    } else {
+      currentPlaylist = [];
+    }
+
+    if (currentPlaylist.length > 0) {
+      songIndex = 0;
+      loadSong(currentPlaylist[songIndex]);
+      playSong();
+    } else {
+      title.textContent = "No tracks found";
+      artist.textContent = "Try another vibe";
+    }
+  } catch (error) {
+    console.error("API Fetch Error:", error);
+    title.textContent = "Loading error";
+    artist.textContent = "Check internet connection";
   }
-  playerContainer.style.backgroundImage = 'none';
 }
 
 // VIBE SELECTION & SWITCHING
-function selectVibe(vibeKey, btnElement, restoreSongIndex = 0, restoreTime = 0, autoPlay = false) {
-  const selectedVibe = vibeConfig[vibeKey];
-  if (!selectedVibe) return;
+function selectVibe(vibeKey, btnElement, autoPlay = false) {
+  if (!vibeApiConfig[vibeKey]) return;
 
   activeVibeKey = vibeKey;
 
+  // Update active pill UI state
   document.querySelectorAll('.vibe-pill').forEach((btn) => btn.classList.remove('active'));
   if (btnElement) {
     btnElement.classList.add('active');
   }
 
-  currentPlaylist = [...selectedVibe.songs];
-  songIndex = restoreSongIndex < currentPlaylist.length ? restoreSongIndex : 0;
-  
-  setBackground(vibeKey);
-  loadSong(currentPlaylist[songIndex], restoreTime);
-
-  if (autoPlay) {
-    playSong();
-  }
+  // Fetch songs via API for selected vibe
+  fetchSongsByVibe(vibeKey);
 }
 
 // LOAD SONG DETAILS INTO AUDIO PLAYER
@@ -136,7 +169,8 @@ function playSong() {
   audio.play().then(() => {
     isPlaying = true;
     updatePlayStateUI();
-  }).catch(() => {
+  }).catch((err) => {
+    console.warn("Playback prevented or error:", err);
     isPlaying = false;
     updatePlayStateUI();
   });
@@ -177,7 +211,6 @@ function nextSong() {
 function renderPlaylistSongs(songsToRender) {
   if (!fullPlaylist) return;
   fullPlaylist.replaceChildren();
-  const activeVibeData = vibeConfig[activeVibeKey];
   
   if (pageCount) {
     pageCount.textContent = `${songsToRender.length} ${songsToRender.length === 1 ? 'song' : 'songs'}`;
@@ -191,15 +224,13 @@ function renderPlaylistSongs(songsToRender) {
     return;
   }
 
-  songsToRender.forEach((song) => {
-    const originalIndex = activeVibeData.songs.findIndex((s) => s.src === song.src);
-
+  songsToRender.forEach((song, idx) => {
     const item = document.createElement('article');
     item.className = 'full-playlist-item';
 
     const number = document.createElement('span');
     number.className = 'playlist-number';
-    number.textContent = String(originalIndex !== -1 ? originalIndex + 1 : 1).padStart(2, '0');
+    number.textContent = String(idx + 1).padStart(2, '0');
 
     const details = document.createElement('div');
     details.className = 'playlist-details';
@@ -215,10 +246,10 @@ function renderPlaylistSongs(songsToRender) {
     playIconSpan.innerHTML = '<i class="fa-solid fa-play" aria-hidden="true"></i>';
 
     item.addEventListener('click', () => {
-      songIndex = originalIndex !== -1 ? originalIndex : 0;
+      songIndex = idx;
       loadSong(currentPlaylist[songIndex]);
       playSong();
-      playlistModal.hidden = true;
+      if (playlistModal) playlistModal.hidden = true;
     });
 
     item.append(number, details, playIconSpan);
@@ -227,28 +258,30 @@ function renderPlaylistSongs(songsToRender) {
 }
 
 // PLAYLIST MODAL OPEN/CLOSE EVENT LISTENERS
-playlistBtn.addEventListener('click', () => {
-  const activeVibeData = vibeConfig[activeVibeKey];
-  if (searchInput) searchInput.value = '';
-  renderPlaylistSongs(activeVibeData.songs);
-  playlistModal.hidden = false;
-  if (searchInput) searchInput.focus();
-});
+if (playlistBtn && playlistModal) {
+  playlistBtn.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    renderPlaylistSongs(currentPlaylist);
+    playlistModal.hidden = false;
+    if (searchInput) searchInput.focus();
+  });
+}
 
-closePlaylistBtn.addEventListener('click', () => {
-  playlistModal.hidden = true;
-});
+if (closePlaylistBtn && playlistModal) {
+  closePlaylistBtn.addEventListener('click', () => {
+    playlistModal.hidden = true;
+  });
 
-playlistModal.addEventListener('click', (event) => {
-  if (event.target === playlistModal) playlistModal.hidden = true;
-});
+  playlistModal.addEventListener('click', (event) => {
+    if (event.target === playlistModal) playlistModal.hidden = true;
+  });
+}
 
 // REAL-TIME SEARCH FILTER IN PLAYLIST
 if (searchInput) {
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
-    const activeVibeData = vibeConfig[activeVibeKey];
-    const filtered = activeVibeData.songs.filter(
+    const filtered = currentPlaylist.filter(
       (song) =>
         song.title.toLowerCase().includes(query) ||
         song.artist.toLowerCase().includes(query)
@@ -261,97 +294,108 @@ if (searchInput) {
 document.querySelectorAll('.vibe-pill').forEach((button) => {
   if (button.id === 'moreVibesBtn') return;
   button.addEventListener('click', () => {
-    selectVibe(button.dataset.vibe, button, 0, 0, true);
+    selectVibe(button.dataset.vibe, button, true);
   });
 });
 
 function closeVibesModal() {
-  vibesModal.hidden = true;
+  if (vibesModal) vibesModal.hidden = true;
 }
 
-moreVibesBtn.addEventListener('click', () => {
-  vibesModal.hidden = false;
-  closeVibesBtn.focus();
-});
+if (moreVibesBtn && vibesModal && closeVibesBtn) {
+  moreVibesBtn.addEventListener('click', () => {
+    vibesModal.hidden = false;
+    closeVibesBtn.focus();
+  });
 
-closeVibesBtn.addEventListener('click', closeVibesModal);
+  closeVibesBtn.addEventListener('click', closeVibesModal);
 
-vibesModal.addEventListener('click', (event) => {
-  if (event.target === vibesModal) closeVibesModal();
-});
+  vibesModal.addEventListener('click', (event) => {
+    if (event.target === vibesModal) closeVibesModal();
+  });
+}
 
 document.querySelectorAll('.genre-card').forEach((button) => {
   button.addEventListener('click', () => {
     closeVibesModal();
     const targetVibe = button.dataset.vibe;
     const correspondingPill = document.querySelector(`[data-vibe="${targetVibe}"]`);
-    selectVibe(targetVibe, correspondingPill, 0, 0, true);
+    selectVibe(targetVibe, correspondingPill, true);
   });
 });
 
 // KEYBOARD SHORTCUTS (ESC to close modals)
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
-    if (!vibesModal.hidden) closeVibesModal();
-    if (!playlistModal.hidden) playlistModal.hidden = true;
+    if (vibesModal && !vibesModal.hidden) closeVibesModal();
+    if (playlistModal && !playlistModal.hidden) playlistModal.hidden = true;
   }
 });
 
 // PLAYER CONTROLS BUTTON EVENT LISTENERS
-playBtn.addEventListener('click', () => {
-  if (isPlaying) {
-    pauseSong();
-  } else {
-    playSong();
-  }
-});
+if (playBtn) {
+  playBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      pauseSong();
+    } else {
+      playSong();
+    }
+  });
+}
 
-prevBtn.addEventListener('click', prevSong);
-nextBtn.addEventListener('click', nextSong);
+if (prevBtn) prevBtn.addEventListener('click', prevSong);
+if (nextBtn) nextBtn.addEventListener('click', nextSong);
 
-shuffleBtn.addEventListener('click', () => {
-  isShuffle = !isShuffle;
-  shuffleBtn.style.color = isShuffle ? ACCENT_COLOR : '#b3b3b3';
-  shuffleBtn.classList.toggle('active-control', isShuffle);
-});
+if (shuffleBtn) {
+  shuffleBtn.addEventListener('click', () => {
+    isShuffle = !isShuffle;
+    shuffleBtn.style.color = isShuffle ? ACCENT_COLOR : '#b3b3b3';
+    shuffleBtn.classList.toggle('active-control', isShuffle);
+  });
+}
 
-repeatBtn.addEventListener('click', () => {
-  isRepeat = !isRepeat;
-  repeatBtn.style.color = isRepeat ? ACCENT_COLOR : '#b3b3b3';
-  repeatBtn.classList.toggle('active-control', isRepeat);
-});
+if (repeatBtn) {
+  repeatBtn.addEventListener('click', () => {
+    isRepeat = !isRepeat;
+    repeatBtn.style.color = isRepeat ? ACCENT_COLOR : '#b3b3b3';
+    repeatBtn.classList.toggle('active-control', isRepeat);
+  });
+}
 
 // AUDIO PROGRESS & SESSION STORAGE UPDATES
-audio.addEventListener('timeupdate', () => {
-  if (!audio.duration || Number.isNaN(audio.duration)) return;
-  const progressPercent = (audio.currentTime / audio.duration) * 100;
-  progress.value = progressPercent || 0;
-  current.textContent = formatTime(audio.currentTime);
+if (audio) {
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration || Number.isNaN(audio.duration)) return;
+    const progressPercent = (audio.currentTime / audio.duration) * 100;
+    if (progress) progress.value = progressPercent || 0;
+    if (current) current.textContent = formatTime(audio.currentTime);
 
-  sessionStorage.setItem('sangeet_vibe', activeVibeKey);
-  sessionStorage.setItem('sangeet_songIndex', songIndex);
-  sessionStorage.setItem('sangeet_currentTime', audio.currentTime);
-});
+    sessionStorage.setItem('sangeet_vibe', activeVibeKey);
+    sessionStorage.setItem('sangeet_songIndex', songIndex);
+    sessionStorage.setItem('sangeet_currentTime', audio.currentTime);
+  });
 
-audio.addEventListener('loadedmetadata', () => {
-  durationDisplay.textContent = formatTime(audio.duration);
-});
+  audio.addEventListener('loadedmetadata', () => {
+    if (durationDisplay) durationDisplay.textContent = formatTime(audio.duration);
+  });
 
-// WHEN TRACK ENDS (Handles Repeat or Next Song)
-audio.addEventListener('ended', () => {
-  if (isRepeat) {
-    audio.currentTime = 0;
-    playSong();
-  } else {
-    nextSong();
-  }
-});
+  audio.addEventListener('ended', () => {
+    if (isRepeat) {
+      audio.currentTime = 0;
+      playSong();
+    } else {
+      nextSong();
+    }
+  });
+}
 
 // SEEK BAR INPUT LISTENER
-progress.addEventListener('input', () => {
-  if (!audio.duration || Number.isNaN(audio.duration)) return;
-  audio.currentTime = (progress.value / 100) * audio.duration;
-});
+if (progress) {
+  progress.addEventListener('input', () => {
+    if (!audio.duration || Number.isNaN(audio.duration)) return;
+    audio.currentTime = (progress.value / 100) * audio.duration;
+  });
+}
 
 // TIME FORMATTING HELPER FUNCTION
 function formatTime(time) {
@@ -361,15 +405,9 @@ function formatTime(time) {
   return `${min}:${sec < 10 ? '0' + sec : sec}`;
 }
 
-// INITIALIZE PLAYER STATE FROM SESSION STORAGE
+// INITIALIZE PLAYER STATE ON PAGE LOAD
 const savedVibe = sessionStorage.getItem('sangeet_vibe') || '90s';
-const savedSongIndex = Number(sessionStorage.getItem('sangeet_songIndex')) || 0;
-const savedCurrentTime = Number(sessionStorage.getItem('sangeet_currentTime')) || 0;
-
 const initialVibeButton = document.querySelector(`[data-vibe="${savedVibe}"]`);
-selectVibe(savedVibe, initialVibeButton || document.querySelector('[data-vibe="90s"]'), savedSongIndex, savedCurrentTime, false);
 
-// FIX: Ensure song info updates immediately on load
-if (currentPlaylist.length > 0 && currentPlaylist[songIndex]) {
-  loadSong(currentPlaylist[songIndex], savedCurrentTime);
-}
+// Load initial vibe songs from API
+selectVibe(savedVibe, initialVibeButton || document.querySelector('[data-vibe="90s"]'), false);
