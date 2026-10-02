@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Sangeet Music Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- MAIN SHELL -->
+    <div class="player-shell">
+        <div class="player-container about-shell-container" id="playerContainer">
+            <!-- BACKGROUND IMAGE -->
+            <img id="bgImage" src="images/Background 2.jpg" alt="Background">
+            <!-- DARK OVERLAY -->
+            <div class="bg-overlay"></div>
+
+            <!-- TOP BAR -->
+            <div class="top-bar nav-top-bar">
+                <div class="brand-badge" aria-label="Sangeet logo">
+                    <div class="brand-mark">
+                        <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="brandGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#00f2fe" />
+                                    <stop offset="100%" stop-color="#1ed760" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="5" y="5" width="54" height="54" rx="18" fill="rgba(5,11,20,0.85)" stroke="rgba(255,255,255,0.08)" />
+                            <path d="M22 18c-6 1-10 7-10 13 0 7 5 12 12 12 3 0 6-1 9-3v16h8V20.5c0-2.5-1.8-4.5-4.3-4.5H22z" fill="url(#brandGradient)" opacity="0.24" />
+                            <path d="M42 17c-4-5-10-7-16-5-7 3-11 10-9 17 2 7 10 9 16 8 5-2 8-6 8-11 0-5-3-7-9-7-4 0-7 2-7 5 0 3 2 4 6 5" fill="none" stroke="url(#brandGradient)" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M26 22v20.5c0 3.8-2.5 7.2-6.2 8.2-5.3 1.5-10.5-2.6-10.5-8.2 0-6.4 5.6-9.8 10.3-8.5" fill="none" stroke="url(#brandGradient)" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="44.5" cy="20.5" r="4.5" fill="#00f2fe" />
+                            <path d="M47 18v18" stroke="#00f2fe" stroke-width="2.3" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="brand-wordmark">Sangeet</div>
+                </div>
+
+                <!-- NAVIGATION LINKS -->
+                <nav class="nav-links-right">
+                    <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+                    <a href="about.html" class="nav-link active"><i class="fa-solid fa-circle-info"></i> About</a>
+                </nav>
+            </div>
+
+            <!-- ABOUT CONTENT WRAPPER -->
+            <div class="player-center-wrapper detailed-about-wrapper">
+                <div class="detailed-profile-card">
+
+                    <!-- SECTION 1: PLAYER DETAILS -->
+                    <div class="profile-section">
+                        <h3><i class="fa-solid fa-music"></i> About Sangeet Player</h3>
+                        <p>
+                            <strong>Sangeet</strong> ek next-generation cinematic web music player hai, jo users ko immersive audio experience provide karta hai. Isme modern glassmorphic UI, dynamic multi-genre vibes (90s, New Hindi, Bhojpuri, Punjabi, etc.), aur smooth playback controls integrated hain.
+                        </p>
+                        <div class="skills-grid" style="margin-top: 8px;">
+                            <span class="skill-pill"><i class="fa-solid fa-bolt"></i> Fast & Responsive</span>
+                            <span class="skill-pill"><i class="fa-solid fa-compact-disc"></i> Multi-Vibe Support</span>
+                            <span class="skill-pill"><i class="fa-solid fa-sliders"></i> Real-time Seeker</span>
+                        </div>
+                    </div>
+
+                    <!-- DIVIDER -->
+                    <hr class="about-divider">
+
+                    <!-- SECTION 2: DEVELOPER DETAILS -->
+                    <div class="profile-header-flex" style="border-bottom: none; padding-bottom: 0;">
+                        <div class="profile-img-container">
+                            <img src="images/developer.jpg" alt="Ganga Sagar Tiwari" onerror="this.src='https://via.placeholder.com/120?text=GST'">
+                        </div>
+                        <div class="profile-title-area">
+                            <h2>Ganga Sagar Tiwari</h2>
+                            <span class="profile-role">Aspiring Software Engineer & Web Developer</span>
+                            <p class="profile-location"><i class="fa-solid fa-location-dot"></i> India</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3><i class="fa-solid fa-user-pen"></i> Developer Bio</h3>
+                        <p>
+                            Passionate about writing clean code and designing aesthetic user interfaces. Dedicated to mastering full-stack development and turning creative ideas into reality through robust web technologies.
+                        </p>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3><i class="fa-solid fa-code"></i> Technical Stack</h3>
+                        <div class="skills-grid">
+                            <span class="skill-pill"><i class="fa-brands fa-html5"></i> HTML5 / CSS3</span>
+                            <span class="skill-pill"><i class="fa-brands fa-js"></i> JavaScript (ES6+)</span>
+                            <span class="skill-pill"><i class="fa-brands fa-react"></i> React.js</span>
+                            <span class="skill-pill"><i class="fa-brands fa-git-alt"></i> Git & GitHub</span>
+                            <span class="skill-pill"><i class="fa-solid fa-wand-magic-sparkles"></i> UI / UX Styling</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="footer">
+                <p>Crafted with ❤️ by <span>Ganga Sagar Tiwari</span></p>
+                <div class="social-links">
+                    <a href="https://github.com/gangasagarg1114-commits" target="_blank" rel="noreferrer"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/gangasagar-softwareengineer/" target="_blank" rel="noreferrer"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/_ami_t_tiwari_/" target="_blank" rel="noreferrer"><i class="fab fa-instagram"></i></a>
+                    <a href="https://x.com/buildwithganga" target="_blank" rel="noreferrer"><i class="fab fa-x-twitter"></i></a>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+</body>
+</html>

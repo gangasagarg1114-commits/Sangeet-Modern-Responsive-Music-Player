@@ -20,7 +20,6 @@ Sangeet ek lightweight Spotify-style music player hai jo plain HTML, CSS aur Jav
 - Selected genre ki playlist URL ke through open hoti hai
 - Playlist page se player par wapas ja sakte hain
 - Missing cover image ke liye fallback image
-- Fast genre switching ke liye stale API response protection
 - Mobile-friendly spacing, touch targets and no horizontal overflow
 
 ## Project Structure
@@ -50,13 +49,9 @@ Sangeet-Modern-Responsive-Music-Player/
 |   |-- english/
 |
 |-- images/
-    |-- 90s/
-    |-- newHindi/
-    |-- bhojpuri/
-    |-- punjabi/
-    |-- haryanvi/
-    |-- english/
-    |-- default-cover.jpg
+    |-- Background 2.jpg
+    |-- developer.jpg
+    |-- vector-abstract-musical-background-vector-illustration_206725-624.avif
 ```
 
 ## Requirements
@@ -171,10 +166,9 @@ songs-genreName.js
 ```javascript
 const genreNameSongs = [
   {
-    title: 'Demo Song',
-    artist: 'Demo Artist',
-    src: 'songs/genreName/demo.mp3',
-    cover: 'images/genreName/demo.jpg'
+    title: 'Song Title',
+    artist: 'Artist Name',
+    src: 'songs/genreName/Song Title.mp3'
   }
 ];
 ```
@@ -190,9 +184,7 @@ const genreNameSongs = [
 
 ```javascript
 'genreName': {
-  bg: 'images/default-cover.jpg',
   label: 'Genre Name',
-  apiQuery: 'genre name songs',
   songs: genreNameSongs
 }
 ```
@@ -233,7 +225,6 @@ Player ka main behavior handle karta hai:
 - Background media disable behavior
 
 ### `playlist.html`
-
 Selected genre ki complete local playlist ko dedicated page par show karta hai.
 
 URL format:
@@ -269,11 +260,9 @@ haryanvi
 english
 ```
 
-## API Behavior
+## Playback and Track Details
 
-Player Deezer search API se preview songs load karne ki koshish karta hai. Agar API CORS, network ya server issue ki wajah se unavailable ho, to local playlist phir bhi immediately load hoti hai.
-
-Local player chalane ke liye API zaroori nahi hai. Local songs ke liye correct files aur paths hona zaroori hai.
+Player local playlist files se gaane, artist names aur cover artwork load karta hai. Full-length playback ke liye audio file aur uska sahi `src` path zaroori hai. Is player mein external music metadata ya streaming API use nahi hoti.
 
 ## Validation Commands
 
@@ -335,14 +324,9 @@ Phir open karein:
 http://localhost:5501/index.html
 ```
 
-## Current Demo Assets
+## Current Playlist Sizes
 
-- 90s: one local example song
-- Bhojpuri: one local example song
-- New Hindi: existing local playlist
-- Punjabi: one local demo song
-- Haryanvi: one local demo song
-- English: one local demo song
+Playlist counts are maintained in each `songs-*.js` file. Use the playlist arrays as the source of truth when adding or removing audio tracks.
 
 ## License and Media Note
 

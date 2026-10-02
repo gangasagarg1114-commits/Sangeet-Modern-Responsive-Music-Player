@@ -15,33 +15,39 @@
         <!-- PLAYER CONTAINER -->
         <div class="player-container" id="playerContainer">
             <!-- BACKGROUND IMAGE -->
-            <img id="bgImage" src="images/background.jpg" alt="">
+            <img id="bgImage" src="images/Background 2.jpg" alt="">
             <!-- DARK OVERLAY -->
             <div class="bg-overlay"></div>
 
             <!-- TOP BAR -->
-            <div class="top-bar">
+            <div class="top-bar nav-top-bar">
                 <div class="brand-badge" aria-label="Sangeet logo">
                     <div class="brand-mark">
                         <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
                             <defs>
                                 <linearGradient id="brandGradient" x1="0%" x2="100%" y1="0%" y2="100%">
-                                    <stop offset="0%" stop-color="#00f2fe" />
-                                    <stop offset="100%" stop-color="#1ed760" />
+                                    <stop offset="0%" stop-color="#42efc0" />
+                                    <stop offset="100%" stop-color="#23b98e" />
                                 </linearGradient>
                             </defs>
                             <rect x="5" y="5" width="54" height="54" rx="18" fill="rgba(5,11,20,0.85)" stroke="rgba(255,255,255,0.08)" />
                             <path d="M22 18c-6 1-10 7-10 13 0 7 5 12 12 12 3 0 6-1 9-3v16h8V20.5c0-2.5-1.8-4.5-4.3-4.5H22z" fill="url(#brandGradient)" opacity="0.24" />
                             <path d="M42 17c-4-5-10-7-16-5-7 3-11 10-9 17 2 7 10 9 16 8 5-2 8-6 8-11 0-5-3-7-9-7-4 0-7 2-7 5 0 3 2 4 6 5" fill="none" stroke="url(#brandGradient)" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M26 22v20.5c0 3.8-2.5 7.2-6.2 8.2-5.3 1.5-10.5-2.6-10.5-8.2 0-6.4 5.6-9.8 10.3-8.5" fill="none" stroke="url(#brandGradient)" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="44.5" cy="20.5" r="4.5" fill="#00f2fe" />
-                            <path d="M47 18v18" stroke="#00f2fe" stroke-width="2.3" stroke-linecap="round" />
+                            <circle cx="44.5" cy="20.5" r="4.5" fill="#42efc0" />
+                            <path d="M47 18v18" stroke="#42efc0" stroke-width="2.3" stroke-linecap="round" />
                         </svg>
                     </div>
                     <div class="brand-wordmark">
                         Sangeet
                     </div>
                 </div>
+
+                <!-- RIGHT SIDE NAVIGATION LINKS -->
+                <nav class="nav-links-right">
+                    <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+                    <a href="about.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+                </nav>
             </div>
 
             <!-- CENTER PLAYER -->
@@ -50,13 +56,15 @@
                 <div class="inner-capsule">
                     <!-- COVER -->
                     <div class="cover-circle">
-                        <i class="fa-solid fa-music fa-bounce" aria-hidden="true" style="--fa-animation-duration: 2s;"></i>
+                        <img class="cover-art" id="coverArt" alt="" hidden>
+                        <i class="cover-fallback fa-solid fa-music" aria-hidden="true"></i>
                     </div>
 
                     <!-- TRACK CORE -->
                     <div class="track-core">
                         <!-- SONG INFORMATION -->
                         <div class="song-info">
+                            <span class="track-kicker"><span></span> Now playing</span>
                             <h2 id="title">Song Name</h2>
                             <p id="artist">Singer Name</p>
                         </div>
@@ -93,7 +101,7 @@
 
                 <!-- VIBE OPTIONS -->
                 <div class="vibe-options">
-                    <button class="vibe-pill active" data-vibe="90s">90s</button>
+                    <button class="vibe-pill active" data-vibe="newHindi">New Hindi</button>
                     <button class="vibe-pill more-vibes-btn" id="moreVibesBtn" type="button" aria-haspopup="dialog" aria-controls="vibesModal">
                         <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
                         <span>More Vibes</span>
@@ -150,6 +158,11 @@
 
             <!-- GENRES -->
             <div class="genre-grid" id="genreGrid">
+                <button class="genre-card" type="button" data-vibe="90s">
+                    <i class="fa-solid fa-compact-disc" aria-hidden="true"></i>
+                    <span>90s</span>
+                    <small>Timeless classics</small>
+                </button>
                 <button class="genre-card" type="button" data-vibe="newHindi">
                     <i class="fa-solid fa-music" aria-hidden="true"></i>
                     <span>New Hindi</span>
@@ -204,15 +217,13 @@
         </section>
     </div>
 
-    <!-- SONG DATA (Local Files Saved in Comments) -->
-    <!--
+    <!-- LOCAL SONG SCRIPTS -->
     <script src="songs-90s.js"></script>
     <script src="songs-bhojpuri.js"></script>
     <script src="songs-newHindi.js"></script>
     <script src="songs-punjabi.js"></script>
     <script src="songs-haryanvi.js"></script>
     <script src="songs-english.js"></script>
-    -->
     
     <!-- MAIN JS -->
     <script src="new.js"></script>
