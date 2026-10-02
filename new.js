@@ -391,12 +391,19 @@ function formatTime(time) {
 }
 
 // INITIALIZE ON LOAD
-const savedVibe = sessionStorage.getItem('sangeet_vibe') || '90s';
-const savedSongIndex = Number(sessionStorage.getItem('sangeet_songIndex')) || 0;
-const savedCurrentTime = Number(sessionStorage.getItem('sangeet_currentTime')) || 0;
+const defaultVibe = 'newHindi';
+const savedVibe = sessionStorage.getItem('sangeet_vibe');
+const restoreNewHindiTrack = savedVibe === defaultVibe;
+const savedSongIndex = restoreNewHindiTrack
+  ? Number(sessionStorage.getItem('sangeet_songIndex')) || 0
+  : 0;
+const savedCurrentTime = restoreNewHindiTrack
+  ? Number(sessionStorage.getItem('sangeet_currentTime')) || 0
+  : 0;
 
-const initialVibeButton = document.querySelector(`[data-vibe="${savedVibe}"]`);
-selectVibe(savedVibe, initialVibeButton || document.querySelector('[data-vibe="90s"]'), savedSongIndex, savedCurrentTime, false);
+const initialVibeButton = document.querySelector(`[data-vibe="${defaultVibe}"]`);
+selectVibe(defaultVibe, initialVibeButton, savedSongIndex, savedCurrentTime, false);
+sessionStorage.setItem('sangeet_vibe', defaultVibe);
 
 if (currentPlaylist.length > 0 && currentPlaylist[songIndex]) {
   loadSong(currentPlaylist[songIndex], savedCurrentTime);
