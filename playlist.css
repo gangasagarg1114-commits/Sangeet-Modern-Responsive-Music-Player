@@ -219,6 +219,67 @@ body.playlist-page-body {
   font-size: 0.9rem;
 }
 
+body.playlist-page-body {
+  background:
+    linear-gradient(135deg, rgba(5, 11, 20, 0.7), rgba(5, 11, 20, 0.48)),
+    url("images/Background 2.jpg") center / cover fixed;
+}
+
+.playlist-page {
+  border: 1px solid rgba(255, 248, 235, 0.24);
+  background: linear-gradient(145deg, rgba(53, 48, 39, 0.68), rgba(17, 20, 23, 0.78));
+  backdrop-filter: blur(26px) saturate(140%);
+  -webkit-backdrop-filter: blur(26px) saturate(140%);
+}
+
+.back-link:hover,
+.track-open:hover {
+  color: #fff0d2;
+}
+
+.playlist-page-header {
+  border-bottom-color: rgba(255, 248, 235, 0.18);
+}
+
+.playlist-page-header h1 {
+  background: linear-gradient(135deg, #fff8eb, #e8cfa3);
+  -webkit-background-clip: text;
+}
+
+.search-box input,
+.full-playlist-item {
+  border-color: rgba(255, 248, 235, 0.18);
+  background: rgba(255, 248, 235, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.search-box input:focus,
+.full-playlist-item:hover {
+  border-color: rgba(255, 239, 211, 0.4);
+  background: rgba(255, 239, 211, 0.13);
+}
+
+.back-link:hover,
+.track-open:hover {
+  color: #fff0d2;
+}
+
+.playlist-page-header h1 {
+  background: #fff0d2;
+  -webkit-text-fill-color: #fff0d2;
+}
+
+.search-box input:focus,
+.full-playlist-item:hover {
+  border-color: rgba(255, 240, 210, 0.48);
+  background: rgba(255, 240, 210, 0.12);
+}
+
+.full-playlist::-webkit-scrollbar-thumb {
+  background: rgba(255, 240, 210, 0.32);
+}
+
 /* ==========================================================
    DESKTOP & TABLET LANDSCAPE SCREENS
    ========================================================== */
